@@ -17,6 +17,7 @@ namespace NTAccounting.Models
         public string Type { get; set; }
 
         [Display(Name = "帳戶餘額")]
-        public string Amount { get; set; }
+        [DataType(DataType.Currency)]
+        public decimal Amount { get; set; }
     }
 }
