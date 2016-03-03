@@ -3,6 +3,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using NTAccounting.Models;
+using System.Collections.Generic;
 
 namespace NTAccounting.Controllers
 {
@@ -41,6 +42,14 @@ namespace NTAccounting.Controllers
         // GET: FinancialAccounts/Create
         public IActionResult Create()
         {
+            List<string> typeList = new List<string>();
+
+            foreach(var item in _context.FinancialAccount)
+            {
+                typeList.Add(item.Type);
+            }
+            ViewBag.typeContainer = typeList;
+
             return View();
         }
 

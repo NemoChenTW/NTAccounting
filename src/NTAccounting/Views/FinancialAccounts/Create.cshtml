@@ -21,8 +21,12 @@
         <div class="form-group">
             <label asp-for="Type" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <input asp-for="Type" class="form-control" />
-                <span asp-validation-for="Type" class="text-danger" />
+                <select input asp-for="Type" class="form-control">
+                    @foreach (var typeString in ViewBag.typeContainer)
+                    {
+                        <option value=@typeString> @typeString </option>
+                    }
+                </select>
             </div>
         </div>
         <div class="form-group">
