@@ -18,5 +18,6 @@ namespace NTAccounting.Models
             // Add your customizations after calling base.OnModelCreating(builder);
         }
         public DbSet<FinancialAccount> FinancialAccount { get; set; }
+        public DbSet<FinancialAccountType> FinancialAccountType { get; set; }
     }
 }
