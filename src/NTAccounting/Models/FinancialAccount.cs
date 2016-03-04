@@ -8,6 +8,7 @@ namespace NTAccounting.Models
 {
     public class FinancialAccount
     {
+        [Key]
         public int ID { get; set; }
 
         [Display(Name = "帳戶名稱")]
