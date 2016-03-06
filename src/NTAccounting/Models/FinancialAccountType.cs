@@ -13,5 +13,7 @@ namespace NTAccounting.Models
 
         [Display(Name = "帳戶類型")]
         public string Type { get; set; }
+
+        public ICollection<FinancialAccount> FinancialAccounts { get; set; }
     }
 }
