@@ -15,7 +15,7 @@
             @Html.DisplayNameFor(model => model.Name)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Type)
+            @Html.DisplayNameFor(model => model.TypeID)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Amount)
@@ -29,7 +29,7 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Type)
+            @Html.DisplayFor(modelItem => item.FinancialAccountType.Type)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Amount)
