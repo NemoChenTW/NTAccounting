@@ -19,7 +19,10 @@ namespace NTAccounting.Controllers
         // GET: FinancialAccounts
         public IActionResult Index()
         {
-            return View(_context.FinancialAccount.ToList());
+            // ¥[¤JForeign key FinancialAccountTypeªºvalue
+            var financialAccounts = _context.FinancialAccount.Include(f => f.FinancialAccountType);
+
+            return View(financialAccounts.ToList());
         }
 
         // GET: FinancialAccounts/Details/5
@@ -43,9 +46,9 @@ namespace NTAccounting.Controllers
         public IActionResult Create()
         {
             var FAType = from FAT in _context.FinancialAccountType
-                         select FAT.Type;
+                         select FAT;
 
-            var FATypeList = new List<string>();
+            var FATypeList = new List<FinancialAccountType>();
             FATypeList.AddRange(FAType.Distinct());
             ViewBag.typeContainer = FATypeList;
 
