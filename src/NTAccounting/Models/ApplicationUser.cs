@@ -9,5 +9,8 @@ namespace NTAccounting.Models
     // Add profile data for application users by adding properties to the ApplicationUser class
     public class ApplicationUser : IdentityUser
     {
+
+        // 設定與UserGroup的關聯
+        public ICollection<UserGroup> UserGroups { get; set; }
     }
 }
