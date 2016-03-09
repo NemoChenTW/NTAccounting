@@ -18,6 +18,9 @@ namespace NTAccounting.Models
             // Add your customizations after calling base.OnModelCreating(builder);
 
             builder.Entity<UserGroupApplicationUser>()
+                .HasKey(k => new { k.UserGroupID, k.ApplicationUserID });
+
+            builder.Entity<UserGroupApplicationUser>()
                 .HasOne(m => m.UserGroup)
                 .WithMany(r => r.UserGroupApplicationUser)
                 .HasForeignKey(fk => fk.UserGroupID);
