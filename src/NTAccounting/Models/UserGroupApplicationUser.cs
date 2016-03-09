@@ -8,7 +8,7 @@ namespace NTAccounting.Models
     public class UserGroupApplicationUser
     {
         public int UserGroupID { get; set; }
-        public int ApplicationUserID { get; set; }
+        public string ApplicationUserID { get; set; }
 
         public UserGroup UserGroup { get; set; }
         public ApplicationUser ApplicationUser { get; set; }
