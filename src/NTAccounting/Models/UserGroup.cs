@@ -13,6 +13,6 @@ namespace NTAccounting.Models
 
 
         // 設定與ApplicationUser的關聯
-        public ICollection<ApplicationUser> ApplicationUsers { get; set; }
+        public List<ApplicationUser> ApplicationUsers { get; set; }
     }
 }

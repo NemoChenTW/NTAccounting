@@ -11,6 +11,6 @@ namespace NTAccounting.Models
     {
 
         // 設定與UserGroup的關聯
-        public ICollection<UserGroup> UserGroups { get; set; }
+        public List<UserGroup> UserGroups { get; set; }
     }
 }
