@@ -10,7 +10,7 @@ namespace NTAccounting.Models
     public class ApplicationUser : IdentityUser
     {
 
-        // 設定與UserGroup的關聯
-        public List<UserGroup> UserGroups { get; set; }
+        // 透過UserGroupApplicationUser 設定與 UserGroup 的多對多關係
+        public List<UserGroupApplicationUser> UserGroupApplicationUser { get; set; }
     }
 }

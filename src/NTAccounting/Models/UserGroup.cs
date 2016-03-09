@@ -12,7 +12,7 @@ namespace NTAccounting.Models
         public string Name { get; set; }
 
 
-        // 設定與ApplicationUser的關聯
-        public List<ApplicationUser> ApplicationUsers { get; set; }
+        // 透過UserGroupApplicationUser 設定與 設定與ApplicationUser的關聯 的多對多關係
+        public List<UserGroupApplicationUser> UserGroupApplicationUser { get; set; }
     }
 }
