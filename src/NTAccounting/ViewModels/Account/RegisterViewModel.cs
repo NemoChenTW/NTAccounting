@@ -9,6 +9,12 @@ namespace NTAccounting.ViewModels.Account
     public class RegisterViewModel
     {
         [Required]
+        [Display(Name = "暱稱")]
+        [StringLength(20, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 2)]
+        public string NickName { get; set; }
+
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }

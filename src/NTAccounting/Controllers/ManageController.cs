@@ -53,6 +53,7 @@ namespace NTAccounting.Controllers
             var user = await GetCurrentUserAsync();
             var model = new IndexViewModel
             {
+                NickName = user.NickName,
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
