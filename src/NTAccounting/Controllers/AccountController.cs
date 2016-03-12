@@ -23,19 +23,22 @@ namespace NTAccounting.Controllers
         private readonly IEmailSender _emailSender;
         private readonly ISmsSender _smsSender;
         private readonly ILogger _logger;
+        private ApplicationDbContext _context;
 
         public AccountController(
             UserManager<ApplicationUser> userManager,
             SignInManager<ApplicationUser> signInManager,
             IEmailSender emailSender,
             ISmsSender smsSender,
-            ILoggerFactory loggerFactory)
+            ILoggerFactory loggerFactory,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<AccountController>();
+            _context = context;
         }
 
         //
@@ -121,6 +124,21 @@ namespace NTAccounting.Controllers
                     //    "Please confirm your account by clicking this link: <a href=\"" + callbackUrl + "\">link</a>");
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     _logger.LogInformation(3, "User created a new account with password.");
+
+                    // 建立UserGroup
+                    var uGroup = new UserGroup();
+                    uGroup.Name = model.NickName;
+                    _context.UserGroup.Add(uGroup);
+                    _context.SaveChanges();
+
+                    // 建立User & UserGroup對應關係
+                    var userGroupAndApplicationUser = new UserGroupApplicationUser();
+                    userGroupAndApplicationUser.ApplicationUserID = user.Id;
+                    userGroupAndApplicationUser.UserGroupID = uGroup.ID;
+                    _context.UserGroupApplicationUser.Add(userGroupAndApplicationUser);
+                    _context.SaveChanges();
+
+
                     return RedirectToAction(nameof(HomeController.Index), "Home");
                 }
                 AddErrors(result);
