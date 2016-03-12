@@ -33,5 +33,6 @@ namespace NTAccounting.Models
         public DbSet<FinancialAccount> FinancialAccount { get; set; }
         public DbSet<FinancialAccountType> FinancialAccountType { get; set; }
         public DbSet<UserGroup> UserGroup { get; set; }
+        public DbSet<UserGroupApplicationUser> UserGroupApplicationUser { get; set; }
     }
 }
