@@ -131,6 +131,8 @@ namespace NTAccounting.Controllers
                     _context.UserGroup.Add(uGroup);
                     _context.SaveChanges();
 
+                    user.RepresentativeGrpupID = uGroup.ID;
+
                     // 建立User & UserGroup對應關係
                     var userGroupAndApplicationUser = new UserGroupApplicationUser();
                     userGroupAndApplicationUser.ApplicationUserID = user.Id;
