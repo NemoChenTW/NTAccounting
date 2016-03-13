@@ -12,6 +12,9 @@ namespace NTAccounting.Models
         // 使用者暱稱
         public string NickName { get; set; }
 
+        // 使用的UserGroupID
+        public int DefaultGrpupID { get; set; }
+
 
         // 透過UserGroupApplicationUser 設定與 UserGroup 的多對多關係
         public List<UserGroupApplicationUser> UserGroupApplicationUser { get; set; }
