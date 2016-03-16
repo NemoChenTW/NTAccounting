@@ -42,7 +42,7 @@ namespace NTAccounting.Controllers
         // GET: SubTransactionCategories/Create
         public IActionResult Create()
         {
-            ViewData["MainCategoryID"] = new SelectList(_context.MainTransactionCategory, "ID", "MainTransactionCategory");
+            ViewData["MainCategoryID"] = new SelectList(_context.MainTransactionCategory, "ID", "Name");
             return View();
         }
 
