@@ -1,7 +1,6 @@
 using System.Linq;
+using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
-using Microsoft.AspNet.Mvc.Rendering;
-using Microsoft.Data.Entity;
 using NTAccounting.Models;
 
 namespace NTAccounting.Controllers
@@ -53,6 +52,16 @@ namespace NTAccounting.Controllers
             {
                 _context.UserGroup.Add(userGroup);
                 _context.SaveChanges();
+
+                var userId = User.GetUserId();
+
+                // 建立User & UserGroup對應關係
+                var userGroupAndApplicationUser = new UserGroupApplicationUser();
+                userGroupAndApplicationUser.ApplicationUserID = userId;
+                userGroupAndApplicationUser.UserGroupID = userGroup.ID;
+                _context.UserGroupApplicationUser.Add(userGroupAndApplicationUser);
+                _context.SaveChanges();
+
                 return RedirectToAction("Index");
             }
             return View(userGroup);
