@@ -16,7 +16,7 @@ namespace NTAccounting.Models
         public string Name { get; set; }
 
         //Foreign key for TransactionMainCategory
-        [Display(Name = "所屬交易主類別")]
+        [Display(Name = "交易主類別")]
         public int MainCategoryID { get; set; }
 
         [ForeignKey("MainCategoryID")]
