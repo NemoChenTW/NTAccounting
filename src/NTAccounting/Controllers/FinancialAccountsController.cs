@@ -45,13 +45,7 @@ namespace NTAccounting.Controllers
         // GET: FinancialAccounts/Create
         public IActionResult Create()
         {
-            var FAType = from FAT in _context.FinancialAccountType
-                         select FAT;
-
-            var FATypeList = new List<FinancialAccountType>();
-            FATypeList.AddRange(FAType.Distinct());
-            ViewBag.typeContainer = FATypeList;
-
+            ViewData["TypeID"] = new SelectList(_context.FinancialAccountType, "ID", "Type");
             return View();
         }
 
