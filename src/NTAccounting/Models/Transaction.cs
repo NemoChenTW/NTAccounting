@@ -16,6 +16,7 @@ namespace NTAccounting.Models
         public string Name { get; set; }
 
         [Display(Name = "交易金額")]
+        [DataType(DataType.Currency)]
         public int Amount { get; set; }
 
         [Display(Name = "交易時間")]
