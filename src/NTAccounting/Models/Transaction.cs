@@ -19,6 +19,8 @@ namespace NTAccounting.Models
         public int Amount { get; set; }
 
         [Display(Name = "交易時間")]
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
         public DateTime Time { get; set; }
 
         //Foreign key for SubTransactionCategory

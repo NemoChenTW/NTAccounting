@@ -3,6 +3,7 @@ using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using NTAccounting.Models;
+using System;
 
 namespace NTAccounting.Controllers
 {
@@ -44,7 +45,9 @@ namespace NTAccounting.Controllers
         {
             ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory");
             ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup");
-            return View();
+            Transaction transaction = new Transaction();
+            transaction.Time = DateTime.Today;
+            return View(transaction);
         }
 
         // POST: Transactions/Create
