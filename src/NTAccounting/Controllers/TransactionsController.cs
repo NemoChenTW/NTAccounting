@@ -43,8 +43,8 @@ namespace NTAccounting.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory");
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup");
+            ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "Name");
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
             return View(transaction);
