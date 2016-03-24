@@ -4,6 +4,7 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using NTAccounting.Models;
 using System;
+using System.Collections.Generic;
 
 namespace NTAccounting.Controllers
 {
@@ -40,11 +41,37 @@ namespace NTAccounting.Controllers
             return View(transaction);
         }
 
+
+        protected SelectList GetMainTransactionCategory()
+        {
+            var MainQuary = from tranCategory in _context.MainTransactionCategory
+                            .AsEnumerable()
+                            orderby tranCategory.ID
+                            select tranCategory;
+
+            var MainSelectList = new SelectList(MainQuary, "ID", "Name");
+
+            return MainSelectList;
+        }
+
+        protected SelectList GetSubTransactionCategory(int id = -1)
+        {
+            var SubQuary = from tranCategory in _context.SubTransactionCategory
+                            .AsEnumerable()
+                            where(tranCategory.ID == id)
+                            orderby tranCategory.ID
+                            select tranCategory;
+
+            var SubSelectList = new SelectList(SubQuary, "ID", "Name");
+
+            return SubSelectList;
+        }
+
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            ViewData["MainTransactionCategoryID"] = new SelectList(_context.MainTransactionCategory, "ID", "Name");
-            ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "Name");
+            ViewData["MainTransactionCategoryID"] = GetMainTransactionCategory();
+            ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
             ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
