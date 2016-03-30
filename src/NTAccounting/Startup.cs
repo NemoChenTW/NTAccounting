@@ -38,11 +38,22 @@ namespace NTAccounting
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add framework services.
-            services.AddEntityFramework()
-                .AddSqlServer()
-                .AddDbContext<ApplicationDbContext>(options =>
-                    options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            //Sql client not available on mono
+            var usingMono = Type.GetType("Mono.Runtime") != null;
+            if (usingMono)
+            {
+                services.AddEntityFramework()
+                    .AddInMemoryDatabase()
+                    .AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase());
+            }
+            else
+            {
+                // Add framework services.
+                services.AddEntityFramework()
+                    .AddSqlServer()
+                    .AddDbContext<ApplicationDbContext>(options =>
+                        options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
+            }
 
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
