@@ -14,7 +14,7 @@ namespace NTAccounting.Controllers
 
         public TransactionsController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Transactions
@@ -54,24 +54,25 @@ namespace NTAccounting.Controllers
             return MainSelectList;
         }
 
-        protected SelectList GetSubTransactionCategory(int id = -1)
+        [HttpGet]
+        public JsonResult GetSubTransactionCategory(int id = -1)
         {
             var SubQuary = from tranCategory in _context.SubTransactionCategory
                             .AsEnumerable()
-                            where(tranCategory.ID == id)
-                            orderby tranCategory.ID
-                            select tranCategory;
+                           where (tranCategory.MainCategoryID == id)
+                           orderby tranCategory.ID
+                           select tranCategory;
 
             var SubSelectList = new SelectList(SubQuary, "ID", "Name");
 
-            return SubSelectList;
+            return Json(SubSelectList);
         }
 
         // GET: Transactions/Create
         public IActionResult Create()
         {
             ViewData["MainTransactionCategoryID"] = GetMainTransactionCategory();
-            ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
+            //ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
             ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
