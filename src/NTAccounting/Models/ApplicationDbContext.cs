@@ -36,5 +36,6 @@ namespace NTAccounting.Models
         public DbSet<UserGroupApplicationUser> UserGroupApplicationUser { get; set; }
         public DbSet<MainTransactionCategory> MainTransactionCategory { get; set; }
         public DbSet<SubTransactionCategory> SubTransactionCategory { get; set; }
+        public DbSet<Transaction> Transaction { get; set; }
     }
 }

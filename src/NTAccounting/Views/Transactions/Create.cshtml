@@ -1,0 +1,105 @@
+@model NTAccounting.Models.Transaction
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h2>Create</h2>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    jQuery(function () {
+        var $subType = $("#SubTC")
+        $("#MainTC").change(function () {
+            var selectedItem = $(this).val();   // MainCategoryID
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "@Url.Action("GetSubTransactionCategory", "Transactions")",
+                data: { id: selectedItem },
+                success: function (data) {
+                    $subType.html('');
+                    $.each(data, function (i) {
+                        $subType.append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                    });
+                    statesProgress.hide();
+                },
+                error: function (xhr) {
+                    alert('Error!.');
+                }
+            })
+        });
+    });
+
+</script>
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <h4>Transaction</h4>
+        <hr />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Amount" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Amount" class="form-control" />
+                <span asp-validation-for="Amount" class="text-danger" />
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SubTransactionCategory.MainCategoryID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="MainTC" asp-for="SubTransactionCategory.MainCategoryID" class="form-control"
+                        asp-items="(SelectList)@ViewData["MainTransactionCategoryID"]" onchange="populate(this.id,'location')">
+                    <option> Please Select </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="SubTransactionCategoryID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select id="SubTC" asp-for="SubTransactionCategoryID" class="form-control" asp-items="(SelectList)@ViewData["SubTransactionCategoryID"]">
+                    <option> Please Select </option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Time" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Time" class="form-control" />
+                <span asp-validation-for="Time" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="UserGroupID" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <select asp-for="UserGroupID" class="form-control" asp-items="(SelectList)@ViewData["UserGroupID"]"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
