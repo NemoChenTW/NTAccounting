@@ -4,6 +4,7 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using NTAccounting.Models;
 using System;
+using System.Collections.Generic;
 
 namespace NTAccounting.Controllers
 {
@@ -13,7 +14,7 @@ namespace NTAccounting.Controllers
 
         public TransactionsController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
         }
 
         // GET: Transactions
@@ -40,10 +41,38 @@ namespace NTAccounting.Controllers
             return View(transaction);
         }
 
+
+        protected SelectList GetMainTransactionCategory()
+        {
+            var MainQuary = from tranCategory in _context.MainTransactionCategory
+                            .AsEnumerable()
+                            orderby tranCategory.ID
+                            select tranCategory;
+
+            var MainSelectList = new SelectList(MainQuary, "ID", "Name");
+
+            return MainSelectList;
+        }
+
+        [HttpGet]
+        public JsonResult GetSubTransactionCategory(int id = -1)
+        {
+            var SubQuary = from tranCategory in _context.SubTransactionCategory
+                            .AsEnumerable()
+                           where (tranCategory.MainCategoryID == id)
+                           orderby tranCategory.ID
+                           select tranCategory;
+
+            var SubSelectList = new SelectList(SubQuary, "ID", "Name");
+
+            return Json(SubSelectList);
+        }
+
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "Name");
+            ViewData["MainTransactionCategoryID"] = GetMainTransactionCategory();
+            //ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
             ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
