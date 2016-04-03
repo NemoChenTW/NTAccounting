@@ -21,7 +21,12 @@ namespace NTAccounting.Controllers
         public IActionResult Index()
         {
             var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory).Include(t => t.UserGroup);
-            return View(applicationDbContext.ToList());
+
+            var transactionIndexList = from transaction in applicationDbContext
+                                  orderby transaction.Time
+                                       select transaction;
+
+            return View(transactionIndexList.ToList());
         }
 
         // GET: Transactions/Details/5
