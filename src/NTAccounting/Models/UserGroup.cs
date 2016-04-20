@@ -17,5 +17,8 @@ namespace NTAccounting.Models
 
         // Transaction Foreignkey關係
         public virtual ICollection<Transaction> Transactions { get; set; }
+
+        // FinancialAccount Foreignkey關係
+        public virtual ICollection<FinancialAccount> FinancialAccounts { get; set; }
     }
 }
