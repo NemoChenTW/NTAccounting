@@ -26,5 +26,13 @@ namespace NTAccounting.Models
 
         [ForeignKey("TypeID")]
         public virtual FinancialAccountType FinancialAccountType { get; set; }
+
+
+        //Foreign key for UserGroup
+        [Display(Name = "帳戶隸屬群組")]
+        public int UserGroupID { get; set; }
+
+        [ForeignKey("UserGroupID")]
+        public virtual UserGroup UserGroup { get; set; }
     }
 }
