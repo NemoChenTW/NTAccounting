@@ -46,6 +46,7 @@ namespace NTAccounting.Controllers
         public IActionResult Create()
         {
             ViewData["TypeID"] = new SelectList(_context.FinancialAccountType, "ID", "Type");
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             return View();
         }
 
