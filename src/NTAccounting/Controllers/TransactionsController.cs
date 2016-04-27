@@ -110,7 +110,7 @@ namespace NTAccounting.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup", transaction.UserGroupID);
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             return View(transaction);
         }
 
