@@ -20,7 +20,7 @@ namespace NTAccounting.Controllers
         // GET: Transactions
         public IActionResult Index()
         {
-            var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory).Include(t => t.UserGroup);
+            var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory);
 
             var transactionIndexList = from transaction in applicationDbContext
                                   orderby transaction.Time
@@ -128,7 +128,7 @@ namespace NTAccounting.Controllers
                 return HttpNotFound();
             }
             ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup", transaction.UserGroupID);
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             return View(transaction);
         }
 
@@ -144,7 +144,7 @@ namespace NTAccounting.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup", transaction.UserGroupID);
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             return View(transaction);
         }
 
