@@ -73,6 +73,20 @@ namespace NTAccounting.Controllers
             return Json(SubSelectList);
         }
 
+        [HttpGet]
+        public JsonResult GetFinancialAccount(int userGroupID = -1)
+        {
+            var accountQuary = from account in _context.FinancialAccount
+                               .AsEnumerable()
+                               where (account.UserGroupID == userGroupID)
+                               orderby account.ID
+                               select account;
+
+            var AccountSelectList = new SelectList(accountQuary, "ID", "Name");
+
+            return Json(AccountSelectList);
+        }
+
         // GET: Transactions/Create
         public IActionResult Create()
         {
