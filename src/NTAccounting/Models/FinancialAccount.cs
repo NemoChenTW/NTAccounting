@@ -34,5 +34,9 @@ namespace NTAccounting.Models
 
         [ForeignKey("UserGroupID")]
         public virtual UserGroup UserGroup { get; set; }
+
+
+        // Transaction Foreignkey關係
+        public virtual ICollection<Transaction> Transactions { get; set; }
     }
 }
