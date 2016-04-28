@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 
 namespace NTAccounting.Controllers
 {
@@ -96,7 +97,8 @@ namespace NTAccounting.Controllers
             //ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
 
             // 產生UserGroup 的 SelectList
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
+            UserGroupsController controllerUserGroup = new UserGroupsController(_context);
+            ViewData["UserGroupID"] = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId()), "ID", "Name");
 
             // 取得UserGroup的DisplayName
             MemberInfo property = typeof(UserGroup).GetProperty("Name");
