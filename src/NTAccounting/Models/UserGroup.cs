@@ -15,9 +15,6 @@ namespace NTAccounting.Models
         // 透過UserGroupApplicationUser 設定與 設定與ApplicationUser的關聯 的多對多關係
         public List<UserGroupApplicationUser> UserGroupApplicationUser { get; set; }
 
-        // Transaction Foreignkey關係
-        public virtual ICollection<Transaction> Transactions { get; set; }
-
         // FinancialAccount Foreignkey關係
         public virtual ICollection<FinancialAccount> FinancialAccounts { get; set; }
     }

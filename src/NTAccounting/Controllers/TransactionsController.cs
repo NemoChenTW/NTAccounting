@@ -5,6 +5,8 @@ using Microsoft.Data.Entity;
 using NTAccounting.Models;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace NTAccounting.Controllers
 {
@@ -20,7 +22,7 @@ namespace NTAccounting.Controllers
         // GET: Transactions
         public IActionResult Index()
         {
-            var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory).Include(t => t.UserGroup);
+            var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory);
 
             var transactionIndexList = from transaction in applicationDbContext
                                   orderby transaction.Time
@@ -73,12 +75,34 @@ namespace NTAccounting.Controllers
             return Json(SubSelectList);
         }
 
+        [HttpGet]
+        public JsonResult GetFinancialAccount(int userGroupID = -1)
+        {
+            var accountQuary = from account in _context.FinancialAccount
+                               .AsEnumerable()
+                               where (account.UserGroupID == userGroupID)
+                               orderby account.ID
+                               select account;
+
+            var AccountSelectList = new SelectList(accountQuary, "ID", "Name");
+
+            return Json(AccountSelectList);
+        }
+
         // GET: Transactions/Create
         public IActionResult Create()
         {
             ViewData["MainTransactionCategoryID"] = GetMainTransactionCategory();
             //ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
+
+            // 產生UserGroup 的 SelectList
             ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
+
+            // 取得UserGroup的DisplayName
+            MemberInfo property = typeof(UserGroup).GetProperty("Name");
+            var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+            ViewData["UserGroupDisplayName"] = displayNameObj.Name;
+
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
             return View(transaction);
@@ -96,7 +120,7 @@ namespace NTAccounting.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup", transaction.UserGroupID);
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             return View(transaction);
         }
 
@@ -114,7 +138,7 @@ namespace NTAccounting.Controllers
                 return HttpNotFound();
             }
             ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup", transaction.UserGroupID);
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             return View(transaction);
         }
 
@@ -130,7 +154,7 @@ namespace NTAccounting.Controllers
                 return RedirectToAction("Index");
             }
             ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "UserGroup", transaction.UserGroupID);
+            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
             return View(transaction);
         }
 

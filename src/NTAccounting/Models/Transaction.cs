@@ -30,12 +30,10 @@ namespace NTAccounting.Models
         [ForeignKey("SubTransactionCategoryID")]
         public SubTransactionCategory SubTransactionCategory { get; set; }
 
-        //Foreign key for UserGroup
-        [Display(Name = "使用者群組")]
-        public int UserGroupID { get; set; }
-        [ForeignKey("UserGroupID")]
-        public UserGroup UserGroup { get; set; }
-
-
+        //Foreign key for FinancialAccount
+        [Display(Name = "交易帳戶")]
+        public int FinancialAccountID { get; set; }
+        [ForeignKey("FinancialAccountID")]
+        public FinancialAccount FinancialAccount { get; set; }
     }
 }
