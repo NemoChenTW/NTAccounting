@@ -2,6 +2,7 @@ using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
 using NTAccounting.Models;
+using System.Collections;
 
 namespace NTAccounting.Controllers
 {
@@ -14,10 +15,20 @@ namespace NTAccounting.Controllers
             _context = context;    
         }
 
+        public IEnumerable GetAvailableUserGroup(string userID )
+        {
+            var userGroupQuery = from userGroupRelation in _context.UserGroupApplicationUser
+                                 where userID == userGroupRelation.ApplicationUserID
+                                 orderby userGroupRelation.UserGroup.Name
+                                 select userGroupRelation.UserGroup;
+
+            return userGroupQuery.ToList();
+        }
+
         // GET: UserGroups
         public IActionResult Index()
         {
-            return View(_context.UserGroup.ToList());
+            return View(GetAvailableUserGroup(User.GetUserId()));
         }
 
         // GET: UserGroups/Details/5
