@@ -81,9 +81,12 @@
             </div>
         </div>
         <div class="form-group">
-            <label  class="col-md-2 control-label"></label>
+            <label class="col-md-2 control-label">@ViewData["UserGroupDisplayName"]</label>
             <div class="col-md-10">
-                <select class="form-control" asp-items="(SelectList)@ViewData["UserGroupID"]"></select>
+                @{
+                    var currentlySelectedIndex = 0; // Currently selected index (usually will come from model)
+                }
+                <select asp-for="@currentlySelectedIndex" class="form-control" asp-items="(SelectList)@ViewData["UserGroupID"]"></select>
             </div>
         </div>
 

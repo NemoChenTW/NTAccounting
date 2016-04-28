@@ -5,6 +5,8 @@ using Microsoft.Data.Entity;
 using NTAccounting.Models;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
+using System.ComponentModel.DataAnnotations;
 
 namespace NTAccounting.Controllers
 {
@@ -92,7 +94,15 @@ namespace NTAccounting.Controllers
         {
             ViewData["MainTransactionCategoryID"] = GetMainTransactionCategory();
             //ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
+
+            // 產生UserGroup 的 SelectList
             ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
+
+            // 取得UserGroup的DisplayName
+            MemberInfo property = typeof(UserGroup).GetProperty("Name");
+            var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+            ViewData["UserGroupDisplayName"] = displayNameObj.Name;
+
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
             return View(transaction);
