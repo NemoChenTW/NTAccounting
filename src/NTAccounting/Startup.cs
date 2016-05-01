@@ -55,7 +55,10 @@ namespace NTAccounting
                         options.UseSqlServer(Configuration["Data:DefaultConnection:ConnectionString"]));
             }
 
-            services.AddIdentity<ApplicationUser, IdentityRole>()
+            services.AddIdentity<ApplicationUser, IdentityRole>(option =>
+            {
+                option.Password.RequireNonLetterOrDigit = false;
+            })
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
