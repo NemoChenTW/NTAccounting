@@ -113,6 +113,10 @@ namespace NTAccounting.Controllers
             var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
             ViewData["UserGroupDisplayName"] = displayNameObj.Name;
 
+            // 取得預設UserGroup
+            var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
+            ViewData["FinancialAccountID"] = GetFinancialAccountSelectList(grpID);
+
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
             return View(transaction);
