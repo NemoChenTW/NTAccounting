@@ -106,7 +106,7 @@ namespace NTAccounting.Controllers
 
             // 產生UserGroup 的 SelectList
             UserGroupsController controllerUserGroup = new UserGroupsController(_context);
-            ViewData["UserGroupID"] = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId()), "ID", "Name");
+            ViewData["UserGroupID"] = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
 
             // 取得UserGroup的DisplayName
             MemberInfo property = typeof(UserGroup).GetProperty("Name");
