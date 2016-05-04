@@ -91,7 +91,7 @@ namespace NTAccounting.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetFinancialAccount(int userGroupID = -1)
+        public JsonResult GetFinancialAccountJson(int userGroupID = -1)
         {
             var AccountSelectList = GetFinancialAccountSelectList(userGroupID);
 
