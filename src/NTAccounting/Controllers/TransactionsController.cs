@@ -77,7 +77,7 @@ namespace NTAccounting.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetFinancialAccount(int userGroupID = -1)
+        public SelectList GetFinancialAccountSelectList(int userGroupID = -1)
         {
             var accountQuary = from account in _context.FinancialAccount
                                .AsEnumerable()
@@ -86,6 +86,14 @@ namespace NTAccounting.Controllers
                                select account;
 
             var AccountSelectList = new SelectList(accountQuary, "ID", "Name");
+
+            return AccountSelectList;
+        }
+
+        [HttpGet]
+        public JsonResult GetFinancialAccount(int userGroupID = -1)
+        {
+            var AccountSelectList = GetFinancialAccountSelectList(userGroupID);
 
             return Json(AccountSelectList);
         }
