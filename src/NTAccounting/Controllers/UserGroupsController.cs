@@ -15,14 +15,25 @@ namespace NTAccounting.Controllers
             _context = context;    
         }
 
-        public IEnumerable GetAvailableUserGroup(string userID )
+        public IEnumerable GetAvailableUserGroup(string userID, bool defaultGrpID = false)
         {
             var userGroupQuery = from userGroupRelation in _context.UserGroupApplicationUser
                                  where userID == userGroupRelation.ApplicationUserID
-                                 orderby userGroupRelation.UserGroup.Name
+                                 orderby userGroupRelation.UserGroup.Name 
                                  select userGroupRelation.UserGroup;
 
-            return userGroupQuery.ToList();
+            var list = userGroupQuery.ToList();
+
+            IEnumerable result;
+            if (defaultGrpID)
+            {
+                result = list.OrderBy(grp => grp.Name != "SweetHome");
+            }
+            else
+            {
+                result = list;
+            }
+            return result;
         }
 
         // GET: UserGroups
