@@ -77,7 +77,7 @@ namespace NTAccounting.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetFinancialAccount(int userGroupID = -1)
+        public SelectList GetFinancialAccountSelectList(int userGroupID = -1)
         {
             var accountQuary = from account in _context.FinancialAccount
                                .AsEnumerable()
@@ -86,6 +86,14 @@ namespace NTAccounting.Controllers
                                select account;
 
             var AccountSelectList = new SelectList(accountQuary, "ID", "Name");
+
+            return AccountSelectList;
+        }
+
+        [HttpGet]
+        public JsonResult GetFinancialAccountJson(int userGroupID = -1)
+        {
+            var AccountSelectList = GetFinancialAccountSelectList(userGroupID);
 
             return Json(AccountSelectList);
         }
@@ -98,12 +106,16 @@ namespace NTAccounting.Controllers
 
             // 產生UserGroup 的 SelectList
             UserGroupsController controllerUserGroup = new UserGroupsController(_context);
-            ViewData["UserGroupID"] = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId()), "ID", "Name");
+            ViewData["UserGroupID"] = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
 
             // 取得UserGroup的DisplayName
             MemberInfo property = typeof(UserGroup).GetProperty("Name");
             var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
             ViewData["UserGroupDisplayName"] = displayNameObj.Name;
+
+            // 取得預設UserGroup
+            var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
+            ViewData["FinancialAccountID"] = GetFinancialAccountSelectList(grpID);
 
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
