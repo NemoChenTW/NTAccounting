@@ -19,5 +19,7 @@ namespace NTAccounting.ViewModels.Manage
         public bool BrowserRemembered { get; set; }
 
         public string NickName { get; internal set; }
+
+        public string RepresentativeGrpupName { get; set; }
     }
 }

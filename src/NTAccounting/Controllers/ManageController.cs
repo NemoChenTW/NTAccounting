@@ -51,9 +51,14 @@ namespace NTAccounting.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
+
+            var RepresentativeGrpupID = user.RepresentativeGrpupID;
+
+
             var model = new IndexViewModel
             {
                 NickName = user.NickName,
+                RepresentativeGrpupName = RepresentativeGrpupID.ToString(),
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
