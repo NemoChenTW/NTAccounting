@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using NTAccounting.Models;
 using NTAccounting.Services;
 using NTAccounting.ViewModels.Manage;
+using Microsoft.AspNet.Mvc.Rendering;
 
 namespace NTAccounting.Controllers
 {
@@ -225,6 +226,48 @@ namespace NTAccounting.Controllers
                     return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangePasswordSuccess });
                 }
                 AddErrors(result);
+                return View(model);
+            }
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+        //
+        // GET: /Manage/ChangeRepresentativeGroup
+        [HttpGet]
+        public async Task<IActionResult> ChangeRepresentativeGroup()
+        {
+            var user = await GetCurrentUserAsync();
+
+            if (user == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var groupsRelationQuery = from relation in _context.UserGroupApplicationUser
+                                      where relation.ApplicationUserID == user.Id
+                                      select relation;
+            var gorupLilst = from grp in _context.UserGroup
+                             where groupsRelationQuery.Any(r => r.UserGroupID == grp.ID)
+                             select grp;
+            ViewData["RepresentativeGroup"] = new SelectList(gorupLilst, "ID", "Name");
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangePassword
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        public IActionResult ChangeRepresentativeGroup(ChangeRepresentativeGroupViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = _context.Users.SingleOrDefault(u => u.Id == User.GetUserId());
+            if (user != null)
+            {
+                user.RepresentativeGroupID = model.TheUserRepresentativeGroup;
+                _context.SaveChanges();
                 return View(model);
             }
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
