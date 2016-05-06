@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNet.Authorization;
@@ -16,6 +14,7 @@ namespace NTAccounting.Controllers
     [Authorize]
     public class ManageController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -23,6 +22,7 @@ namespace NTAccounting.Controllers
         private readonly ILogger _logger;
 
         public ManageController(
+        ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
@@ -34,6 +34,7 @@ namespace NTAccounting.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _context = context;
         }
 
         //
@@ -51,14 +52,12 @@ namespace NTAccounting.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
-
-            var RepresentativeGrpupID = user.RepresentativeGrpupID;
-
+            var representativeGrpupName = _context.UserGroup.Single(grp => grp.ID == user.RepresentativeGrpupID).Name;
 
             var model = new IndexViewModel
             {
                 NickName = user.NickName,
-                RepresentativeGrpupName = RepresentativeGrpupID.ToString(),
+                RepresentativeGrpupName = representativeGrpupName,
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
