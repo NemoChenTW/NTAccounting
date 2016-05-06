@@ -73,8 +73,8 @@ namespace NTAccounting.Models
             *   Nemo 代表群組為 SweetHome
             *   Teresa 代表群組為 Teresa
             */
-            userNemo.RepresentativeGrpupID      = groupSweetHome.ID;
-            userTeresa.RepresentativeGrpupID    = groupTeresa.ID;
+            userNemo.RepresentativeGroupID      = groupSweetHome.ID;
+            userTeresa.RepresentativeGroupID    = groupTeresa.ID;
 
             // 使用者群組與使用者關係
             UserGroupApplicationUser relation0, relation1, relation2, relation3;

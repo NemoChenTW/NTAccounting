@@ -52,7 +52,7 @@ namespace NTAccounting.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
-            var representativeGrpupName = _context.UserGroup.Single(grp => grp.ID == user.RepresentativeGrpupID).Name;
+            var representativeGrpupName = _context.UserGroup.Single(grp => grp.ID == user.RepresentativeGroupID).Name;
 
             var model = new IndexViewModel
             {
