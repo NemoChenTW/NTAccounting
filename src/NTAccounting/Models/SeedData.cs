@@ -76,11 +76,6 @@ namespace NTAccounting.Models
             userNemo.RepresentativeGrpupID      = groupSweetHome.ID;
             userTeresa.RepresentativeGrpupID    = groupTeresa.ID;
 
-            var res = userManager.UpdateAsync(userNemo).Result;
-            res = userManager.UpdateAsync(userTeresa).Result;
-
-
-
             // 使用者群組與使用者關係
             UserGroupApplicationUser relation0, relation1, relation2, relation3;
             context.UserGroupApplicationUser.AddRange(
@@ -88,66 +83,28 @@ namespace NTAccounting.Models
                     relation0 = new UserGroupApplicationUser
                     {
                         UserGroupID = groupNemo.ID,
-                        UserGroup = groupNemo,
                         ApplicationUserID = userNemo.Id,
-                        ApplicationUser = userNemo
                     },
                     // Group Teresa
                     relation1 = new UserGroupApplicationUser
                     {
                         UserGroupID = groupTeresa.ID,
-                        UserGroup = groupTeresa,
                         ApplicationUserID = userTeresa.Id,
-                        ApplicationUser = userTeresa
                     },
 
                     // Group SweetHome
                     relation2 = new UserGroupApplicationUser
                     {
                         UserGroupID = groupSweetHome.ID,
-                        UserGroup = groupSweetHome,
                         ApplicationUserID = userNemo.Id,
-                        ApplicationUser = userNemo
                     },
                     // Group SweetHome
                     relation3 = new UserGroupApplicationUser
                     {
                         UserGroupID = groupSweetHome.ID,
-                        UserGroup = groupSweetHome,
                         ApplicationUserID = userTeresa.Id,
-                        ApplicationUser = userTeresa
                     }
                 );
-            //context.SaveChanges();
-
-            userNemo.UserGroupApplicationUser.Add(relation0);
-            userNemo.UserGroupApplicationUser.Add(relation2);
-
-            var nemo = userManager.Users.Single(u => u.UserName == "nemo@mail.com");
-            nemo.UserGroupApplicationUser.Add(relation0);
-            nemo.UserGroupApplicationUser.Add(relation2);
-
-            userTeresa.UserGroupApplicationUser.Add(relation1);
-            userTeresa.UserGroupApplicationUser.Add(relation3);
-
-            // 設定User0 的使用者與使用者群組關係
-            //var userNemoRelation = from relation in context.UserGroupApplicationUser
-            //                       where relation.ApplicationUserID == userNemo.Id
-            //                       select relation;
-            //userNemo.UserGroupApplicationUser.AddRange(userNemoRelation.ToList());
-            //userNemo.UserGroupApplicationUser.Add(relation0);
-            //userNemo.UserGroupApplicationUser.Add(relation2);
-
-            //// 設定User1 的使用者與使用者群組關係
-            //var userTeresaRelation = from relation in context.UserGroupApplicationUser
-            //                         where relation.ApplicationUserID == userTeresa.Id
-            //                         select relation;
-            //userNemo.UserGroupApplicationUser.AddRange(userTeresaRelation.ToList());
-            //userTeresa.UserGroupApplicationUser.Add(relation1);
-            //userTeresa.UserGroupApplicationUser.Add(relation3);
-
-            //userManager.UpdateAsync(userNemo);
-            //userManager.UpdateAsync(userTeresa);
 
 
             // 帳戶類型
@@ -172,27 +129,21 @@ namespace NTAccounting.Models
                         Name = "富邦",
                         Amount = 80000,
                         TypeID = AccountTypeCash.ID,
-                        FinancialAccountType = AccountTypeCash,
                         UserGroupID = groupNemo.ID,
-                        UserGroup = groupNemo
                     },
                     FinancialAccount1 = new FinancialAccount
                     {
                         Name = "國泰世華",
                         Amount = 12000,
                         TypeID = AccountTypeCash.ID,
-                        FinancialAccountType = AccountTypeCash,
                         UserGroupID = groupNemo.ID,
-                        UserGroup = groupNemo
                     },
                     FinancialAccount2 = new FinancialAccount
                     {
                         Name = "身上現金",
                         Amount = 3000,
                         TypeID = AccountTypeFreeMoney.ID,
-                        FinancialAccountType = AccountTypeFreeMoney,
                         UserGroupID = groupNemo.ID,
-                        UserGroup = groupNemo
                     }
                 );
 
