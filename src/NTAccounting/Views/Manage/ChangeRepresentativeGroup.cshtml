@@ -12,9 +12,7 @@
     <div class="form-group">
         <label asp-for="TheUserRepresentativeGroup" class="col-md-2 control-label"></label>
         <div class="col-md-10">
-            <select asp-for="TheUserRepresentativeGroup" class="form-control" asp-items="(SelectList)@ViewData["RepresentativeGroup"]">
-                <option> Please Select </option>
-            </select>
+            <select asp-for="TheUserRepresentativeGroup" class="form-control" asp-items="(SelectList)@ViewData["RepresentativeGroup"]"></select>
         </div>
     </div>
     <div class="form-group">

@@ -9,6 +9,7 @@ using NTAccounting.Models;
 using NTAccounting.Services;
 using NTAccounting.ViewModels.Manage;
 using Microsoft.AspNet.Mvc.Rendering;
+using System.Collections;
 
 namespace NTAccounting.Controllers
 {
@@ -250,7 +251,13 @@ namespace NTAccounting.Controllers
             var gorupLilst = from grp in _context.UserGroup
                              where groupsRelationQuery.Any(r => r.UserGroupID == grp.ID)
                              select grp;
-            ViewData["RepresentativeGroup"] = new SelectList(gorupLilst, "ID", "Name");
+
+            var list = gorupLilst.ToList();
+
+            IEnumerable orderedGroup;
+            orderedGroup = list.OrderBy(grp => grp.ID != user.RepresentativeGroupID);
+
+            ViewData["RepresentativeGroup"] = new SelectList(orderedGroup, "ID", "Name");
             return View();
         }
 
