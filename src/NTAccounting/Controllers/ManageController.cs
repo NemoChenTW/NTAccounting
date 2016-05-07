@@ -254,9 +254,9 @@ namespace NTAccounting.Controllers
         }
 
         //
-        // POST: /Manage/ChangePassword
+        // POST: /Manage/ChangeRepresentativeGroup
         [HttpPost]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public IActionResult ChangeRepresentativeGroup(ChangeRepresentativeGroupViewModel model)
         {
             if (!ModelState.IsValid)
