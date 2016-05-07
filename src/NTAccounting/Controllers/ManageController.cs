@@ -46,6 +46,7 @@ namespace NTAccounting.Controllers
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.ChangeRepresentGroupSuccess ? "Your Representative group has been changed."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
@@ -378,6 +379,7 @@ namespace NTAccounting.Controllers
             AddPhoneSuccess,
             AddLoginSuccess,
             ChangePasswordSuccess,
+            ChangeRepresentGroupSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,
