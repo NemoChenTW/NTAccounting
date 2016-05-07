@@ -10,6 +10,6 @@ namespace NTAccounting.ViewModels.Manage
     {
         [Required]
         [Display(Name = "使用者群組")]
-        public int TheUserRepresentativeGroup;
+        public int TheUserRepresentativeGroup { get; set; }
     }
 }
