@@ -15,6 +15,10 @@ namespace NTAccounting.Models
         [Display(Name = "帳戶名稱")]
         public string Name { get; set; }
 
+        [Display (Name = "初始金額")]
+        [DataType(DataType.Currency)]
+        public decimal InitialAmount { get; set; }
+
         [Display(Name = "帳戶餘額")]
         [DataType(DataType.Currency)]
         public decimal Amount { get; set; }
