@@ -269,7 +269,7 @@ namespace NTAccounting.Controllers
             {
                 user.RepresentativeGroupID = model.TheUserRepresentativeGroup;
                 _context.SaveChanges();
-                return View(model);
+                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeRepresentGroupSuccess });
             }
             return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
         }
