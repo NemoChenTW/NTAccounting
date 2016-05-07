@@ -127,22 +127,25 @@ namespace NTAccounting.Models
                     FinancialAccount0 = new FinancialAccount
                     {
                         Name = "富邦",
+                        InitialAmount = 80000,
                         Amount = 80000,
-                        TypeID = AccountTypeCash.ID,
+                        TypeID = AccountTypeFreeMoney.ID,
                         UserGroupID = groupNemo.ID,
                     },
                     FinancialAccount1 = new FinancialAccount
                     {
                         Name = "國泰世華",
+                        InitialAmount = 12000,
                         Amount = 12000,
-                        TypeID = AccountTypeCash.ID,
+                        TypeID = AccountTypeFreeMoney.ID,
                         UserGroupID = groupNemo.ID,
                     },
                     FinancialAccount2 = new FinancialAccount
                     {
                         Name = "身上現金",
+                        InitialAmount = 3000,
                         Amount = 3000,
-                        TypeID = AccountTypeFreeMoney.ID,
+                        TypeID = AccountTypeCash.ID,
                         UserGroupID = groupNemo.ID,
                     }
                 );

@@ -57,6 +57,9 @@ namespace NTAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
+                // 設定餘額為初始金額
+                financialAccount.Amount = financialAccount.InitialAmount;
+
                 _context.FinancialAccount.Add(financialAccount);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
