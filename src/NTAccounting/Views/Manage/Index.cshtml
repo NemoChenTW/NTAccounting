@@ -13,6 +13,11 @@
         <dd>
             @Model.NickName
         </dd>
+        <dt>RepresentativeGrpup:</dt>
+        <dd>
+            @Model.RepresentativeGrpupName
+            <input type="submit" value="Change" class="btn btn-default" onclick="location.href='@Url.Action("ChangeRepresentativeGroup", "Manage")'" />
+        </dd>
         <dt>Password:</dt>
         <dd>
             [

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNet.Authorization;
@@ -10,12 +8,15 @@ using Microsoft.Extensions.Logging;
 using NTAccounting.Models;
 using NTAccounting.Services;
 using NTAccounting.ViewModels.Manage;
+using Microsoft.AspNet.Mvc.Rendering;
+using System.Collections;
 
 namespace NTAccounting.Controllers
 {
     [Authorize]
     public class ManageController : Controller
     {
+        private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
@@ -23,6 +24,7 @@ namespace NTAccounting.Controllers
         private readonly ILogger _logger;
 
         public ManageController(
+        ApplicationDbContext context,
         UserManager<ApplicationUser> userManager,
         SignInManager<ApplicationUser> signInManager,
         IEmailSender emailSender,
@@ -34,6 +36,7 @@ namespace NTAccounting.Controllers
             _emailSender = emailSender;
             _smsSender = smsSender;
             _logger = loggerFactory.CreateLogger<ManageController>();
+            _context = context;
         }
 
         //
@@ -44,6 +47,7 @@ namespace NTAccounting.Controllers
             ViewData["StatusMessage"] =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
+                : message == ManageMessageId.ChangeRepresentGroupSuccess ? "Your Representative group has been changed."
                 : message == ManageMessageId.SetTwoFactorSuccess ? "Your two-factor authentication provider has been set."
                 : message == ManageMessageId.Error ? "An error has occurred."
                 : message == ManageMessageId.AddPhoneSuccess ? "Your phone number was added."
@@ -51,9 +55,12 @@ namespace NTAccounting.Controllers
                 : "";
 
             var user = await GetCurrentUserAsync();
+            var representativeGrpupName = _context.UserGroup.Single(grp => grp.ID == user.RepresentativeGroupID).Name;
+
             var model = new IndexViewModel
             {
                 NickName = user.NickName,
+                RepresentativeGrpupName = representativeGrpupName,
                 HasPassword = await _userManager.HasPasswordAsync(user),
                 PhoneNumber = await _userManager.GetPhoneNumberAsync(user),
                 TwoFactor = await _userManager.GetTwoFactorEnabledAsync(user),
@@ -227,6 +234,54 @@ namespace NTAccounting.Controllers
         }
 
         //
+        // GET: /Manage/ChangeRepresentativeGroup
+        [HttpGet]
+        public async Task<IActionResult> ChangeRepresentativeGroup()
+        {
+            var user = await GetCurrentUserAsync();
+
+            if (user == null)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var groupsRelationQuery = from relation in _context.UserGroupApplicationUser
+                                      where relation.ApplicationUserID == user.Id
+                                      select relation;
+            var gorupLilst = from grp in _context.UserGroup
+                             where groupsRelationQuery.Any(r => r.UserGroupID == grp.ID)
+                             select grp;
+
+            var list = gorupLilst.ToList();
+
+            IEnumerable orderedGroup;
+            orderedGroup = list.OrderBy(grp => grp.ID != user.RepresentativeGroupID);
+
+            ViewData["RepresentativeGroup"] = new SelectList(orderedGroup, "ID", "Name");
+            return View();
+        }
+
+        //
+        // POST: /Manage/ChangeRepresentativeGroup
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ChangeRepresentativeGroup(ChangeRepresentativeGroupViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            var user = _context.Users.SingleOrDefault(u => u.Id == User.GetUserId());
+            if (user != null)
+            {
+                user.RepresentativeGroupID = model.TheUserRepresentativeGroup;
+                _context.SaveChanges();
+                return RedirectToAction(nameof(Index), new { Message = ManageMessageId.ChangeRepresentGroupSuccess });
+            }
+            return RedirectToAction(nameof(Index), new { Message = ManageMessageId.Error });
+        }
+
+        //
         // GET: /Manage/SetPassword
         [HttpGet]
         public IActionResult SetPassword()
@@ -331,6 +386,7 @@ namespace NTAccounting.Controllers
             AddPhoneSuccess,
             AddLoginSuccess,
             ChangePasswordSuccess,
+            ChangeRepresentGroupSuccess,
             SetTwoFactorSuccess,
             SetPasswordSuccess,
             RemoveLoginSuccess,

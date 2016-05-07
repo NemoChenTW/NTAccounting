@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace NTAccounting.Models
@@ -25,84 +26,96 @@ namespace NTAccounting.Models
 
             // 使用者
             var userManager = serviceProvider.GetService<UserManager<ApplicationUser>>();
-            ApplicationUser user0, user1;
+            ApplicationUser userNemo, userTeresa;
             if (context.Users.Any(u => u.UserName == "nemo@mail.com"))
-                user0 = context.Users.First(u => u.UserName == "nemo@mail.com");
+                userNemo = context.Users.First(u => u.UserName == "nemo@mail.com");
             else
             {
-                user0 = new ApplicationUser { UserName = "nemo@mail.com", Email = "nemo@mail.com" };
-                var result = userManager.CreateAsync(user0, "Abc123").Result;
+                userNemo = new ApplicationUser { UserName = "nemo@mail.com", Email = "nemo@mail.com" };
+                userNemo.NickName = "Nemo";
+                var result = userManager.CreateAsync(userNemo, "Abc123").Result;
             }
             if (context.Users.Any(u => u.UserName == "teresa@mail.com"))
-                user1 = context.Users.First(u => u.UserName == "teresa@mail.com");
+                userTeresa = context.Users.First(u => u.UserName == "teresa@mail.com");
             else
             {
-                user1 = new ApplicationUser { UserName = "teresa@mail.com", Email = "teresa@mail.com" };
-                var result = userManager.CreateAsync(user1, "Abc123").Result;
+                userTeresa = new ApplicationUser { UserName = "teresa@mail.com", Email = "teresa@mail.com" };
+                userTeresa.NickName = "Teresa";
+                var result = userManager.CreateAsync(userTeresa, "Abc123").Result;
             }
 
+            userNemo    = context.Users.Single(u => u.UserName == "nemo@mail.com");
+            userTeresa  = context.Users.Single(u => u.UserName == "teresa@mail.com");
+
             // 使用者群組
-            UserGroup group0, group1, group2;
             context.UserGroup.AddRange(
-                    group0 = new UserGroup
+                    new UserGroup
                     {
                         Name = "Nemo"
                     },
-                    group1 = new UserGroup
+                    new UserGroup
                     {
                         Name = "Teresa"
                     },
-                    group2 = new UserGroup
+                    new UserGroup
                     {
                         Name = "SweetHome"
                     }
                 );
+            context.SaveChanges();
+            UserGroup groupNemo         = context.UserGroup.Single(grp => grp.Name == "Nemo");
+            UserGroup groupTeresa       = context.UserGroup.Single(grp => grp.Name == "Teresa");
+            UserGroup groupSweetHome    = context.UserGroup.Single(grp => grp.Name == "SweetHome");
+
+
+            // 設定 使用者代表群組
+            /*
+            *   Nemo 代表群組為 SweetHome
+            *   Teresa 代表群組為 Teresa
+            */
+            userNemo.RepresentativeGroupID      = groupSweetHome.ID;
+            userTeresa.RepresentativeGroupID    = groupTeresa.ID;
 
             // 使用者群組與使用者關係
+            UserGroupApplicationUser relation0, relation1, relation2, relation3;
             context.UserGroupApplicationUser.AddRange(
                     // Group Nemo
-                    new UserGroupApplicationUser
+                    relation0 = new UserGroupApplicationUser
                     {
-                        UserGroupID = 0,
-                        UserGroup = group0,
-                        ApplicationUserID = user0.Id,
-                        ApplicationUser = user0
+                        UserGroupID = groupNemo.ID,
+                        ApplicationUserID = userNemo.Id,
                     },
                     // Group Teresa
-                    new UserGroupApplicationUser
+                    relation1 = new UserGroupApplicationUser
                     {
-                        UserGroupID = 1,
-                        UserGroup = group1,
-                        ApplicationUserID = user1.Id,
-                        ApplicationUser = user1
+                        UserGroupID = groupTeresa.ID,
+                        ApplicationUserID = userTeresa.Id,
                     },
 
                     // Group SweetHome
-                    new UserGroupApplicationUser
+                    relation2 = new UserGroupApplicationUser
                     {
-                        UserGroupID = 2,
-                        UserGroup = group2,
-                        ApplicationUserID = user0.Id,
-                        ApplicationUser = user0
+                        UserGroupID = groupSweetHome.ID,
+                        ApplicationUserID = userNemo.Id,
                     },
                     // Group SweetHome
-                    new UserGroupApplicationUser
+                    relation3 = new UserGroupApplicationUser
                     {
-                        UserGroupID = 2,
-                        UserGroup = group2,
-                        ApplicationUserID = user1.Id,
-                        ApplicationUser = user1
+                        UserGroupID = groupSweetHome.ID,
+                        ApplicationUserID = userTeresa.Id,
                     }
                 );
 
+
             // 帳戶類型
-            FinancialAccountType FinancialAccountType0, FinancialAccountType1;
+            FinancialAccountType AccountTypeCash;
+            FinancialAccountType AccountTypeFreeMoney;
             context.FinancialAccountType.AddRange(
-                    FinancialAccountType0 = new FinancialAccountType
+                    AccountTypeCash = new FinancialAccountType
                     {
                         Type = "現金"
                     },
-                    FinancialAccountType1 = new FinancialAccountType
+                    AccountTypeFreeMoney = new FinancialAccountType
                     {
                         Type = "自由存款"
                     }
@@ -115,82 +128,77 @@ namespace NTAccounting.Models
                     {
                         Name = "富邦",
                         Amount = 80000,
-                        TypeID = FinancialAccountType0.ID,
-                        FinancialAccountType = FinancialAccountType0,
-                        UserGroupID = group0.ID,
-                        UserGroup = group0
+                        TypeID = AccountTypeCash.ID,
+                        UserGroupID = groupNemo.ID,
                     },
                     FinancialAccount1 = new FinancialAccount
                     {
                         Name = "國泰世華",
                         Amount = 12000,
-                        TypeID = FinancialAccountType0.ID,
-                        FinancialAccountType = FinancialAccountType0,
-                        UserGroupID = group0.ID,
-                        UserGroup = group0
+                        TypeID = AccountTypeCash.ID,
+                        UserGroupID = groupNemo.ID,
                     },
                     FinancialAccount2 = new FinancialAccount
                     {
                         Name = "身上現金",
                         Amount = 3000,
-                        TypeID = FinancialAccountType1.ID,
-                        FinancialAccountType = FinancialAccountType1,
-                        UserGroupID = group0.ID,
-                        UserGroup = group0
+                        TypeID = AccountTypeFreeMoney.ID,
+                        UserGroupID = groupNemo.ID,
                     }
                 );
 
+
             // 交易主類別
-            MainTransactionCategory MainTransactionCategory0, MainTransactionCategory1, MainTransactionCategory2;
+            MainTransactionCategory MainCategoryFood, MainCategorySystem, MainCategoryArt;
             context.MainTransactionCategory.AddRange(
-                    MainTransactionCategory0 = new MainTransactionCategory
+                    MainCategoryFood = new MainTransactionCategory
                     {
                         Name = "食物"
                     },
-                    MainTransactionCategory1 = new MainTransactionCategory
+                    MainCategorySystem = new MainTransactionCategory
                     {
                         Name = "民生設施"
                     },
-                    MainTransactionCategory2 = new MainTransactionCategory
+                    MainCategoryArt = new MainTransactionCategory
                     {
                         Name = "文藝"
                     }
                 );
+
 
             // 交易子類別
             context.SubTransactionCategory.AddRange(
                     new SubTransactionCategory
                     {
                         Name = "早餐",
-                        MainCategoryID = MainTransactionCategory0.ID
+                        MainCategoryID = MainCategoryFood.ID
                     },
                     new SubTransactionCategory
                     {
                         Name = "午餐",
-                        MainCategoryID = MainTransactionCategory0.ID
+                        MainCategoryID = MainCategoryFood.ID
                     },
                     new SubTransactionCategory
                     {
                         Name = "水費",
-                        MainCategoryID = MainTransactionCategory1.ID
+                        MainCategoryID = MainCategorySystem.ID
                     },
                     new SubTransactionCategory
                     {
                         Name = "電費",
-                        MainCategoryID = MainTransactionCategory1.ID
+                        MainCategoryID = MainCategorySystem.ID
                     },
                     new SubTransactionCategory
                     {
                         Name = "瓦斯費",
-                        MainCategoryID = MainTransactionCategory1.ID
+                        MainCategoryID = MainCategorySystem.ID
                     },
                     new SubTransactionCategory
                     {
                         Name = "音樂會",
-                        MainCategoryID = MainTransactionCategory2.ID
+                        MainCategoryID = MainCategoryArt.ID
                     }
                 );
-
             context.SaveChanges();
         }
 

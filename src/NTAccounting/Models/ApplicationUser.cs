@@ -13,7 +13,7 @@ namespace NTAccounting.Models
         public string NickName { get; set; }
 
         // 使用的UserGroupID
-        public int RepresentativeGrpupID { get; set; }
+        public int RepresentativeGroupID { get; set; }
 
 
         // 透過UserGroupApplicationUser 設定與 UserGroup 的多對多關係
