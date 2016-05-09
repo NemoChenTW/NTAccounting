@@ -129,7 +129,13 @@ namespace NTAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
+                // 新增交易
                 _context.Transaction.Add(transaction);
+
+                // 帳戶扣款
+                var account = _context.FinancialAccount.SingleOrDefault(ac => ac.ID == transaction.FinancialAccountID);
+                account.Amount = account.Amount - transaction.Amount;
+
                 _context.SaveChanges();
                 return RedirectToAction("Index");
             }
