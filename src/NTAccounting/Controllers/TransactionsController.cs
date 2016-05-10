@@ -50,14 +50,18 @@ namespace NTAccounting.Controllers
         }
 
 
-        protected SelectList GetMainTransactionCategory()
+        protected SelectList GetMainTransactionCategory(int selectedID = -1)
         {
             var MainQuary = from tranCategory in _context.MainTransactionCategory
                             .AsEnumerable()
                             orderby tranCategory.ID
                             select tranCategory;
+            SelectList MainSelectList;
+            if (selectedID != -1)
+                MainSelectList = new SelectList(MainQuary, "ID", "Name", selectedID);
+            else
+                MainSelectList = new SelectList(MainQuary, "ID", "Name");
 
-            var MainSelectList = new SelectList(MainQuary, "ID", "Name");
 
             return MainSelectList;
         }
