@@ -157,8 +157,23 @@ namespace NTAccounting.Controllers
             {
                 return HttpNotFound();
             }
-            ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
+
+            ViewData["MainTransactionCategoryID"] = GetMainTransactionCategory();
+            //ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
+
+            // 產生UserGroup 的 SelectList
+            UserGroupsController controllerUserGroup = new UserGroupsController(_context);
+            ViewData["UserGroupID"] = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
+
+            // 取得UserGroup的DisplayName
+            MemberInfo property = typeof(UserGroup).GetProperty("Name");
+            var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+            ViewData["UserGroupDisplayName"] = displayNameObj.Name;
+
+            // 取得預設UserGroup
+            var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
+            ViewData["FinancialAccountID"] = GetFinancialAccountSelectList(grpID);
+
             return View(transaction);
         }
 
