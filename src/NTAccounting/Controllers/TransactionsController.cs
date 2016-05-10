@@ -203,6 +203,11 @@ namespace NTAccounting.Controllers
         {
             Transaction transaction = _context.Transaction.Single(m => m.ID == id);
             _context.Transaction.Remove(transaction);
+
+            // ¦^´_±b¤á¾lÃB
+            var account = _context.FinancialAccount.SingleOrDefault(ac => ac.ID == transaction.FinancialAccountID);
+            account.Amount = account.Amount + transaction.Amount;
+
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
