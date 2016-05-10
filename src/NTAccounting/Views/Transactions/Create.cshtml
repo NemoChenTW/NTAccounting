@@ -83,7 +83,7 @@
             <label asp-for="SubTransactionCategory.MainCategoryID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select id="MainTC" asp-for="SubTransactionCategory.MainCategoryID" class="form-control"
-                        asp-items="(SelectList)@ViewData["MainTransactionCategoryID"]" onchange="populate(this.id,'location')">
+                        asp-items="@ViewBag.viewModel.MainTransactionCategoryCollection" onchange="populate(this.id,'location')">
                     <option> Please Select </option>
                 </select>
             </div>
@@ -104,20 +104,20 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-2 control-label">@ViewData["UserGroupDisplayName"]</label>
+            <label class="col-md-2 control-label">@ViewBag.viewModel.UserGroupDisplayName</label>
             <div class="col-md-10">
                 @{
                     var currentlySelectedIndex = 0; // Currently selected index (usually will come from model)
                 }
                 <select id="UsrGrpID" asp-for="@currentlySelectedIndex" class="form-control"
-                        asp-items="(SelectList)@ViewData["UserGroupID"]" onchange="populate(this.id,'location')"></select>
+                        asp-items="(SelectList)@ViewBag.viewModel.UserGroupCollection" onchange="populate(this.id,'location')"></select>
             </div>
         </div>
 
         <div class="form-group">
             <label asp-for="FinancialAccountID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select id="FinacialACID" asp-for="FinancialAccountID" class="form-control" asp-items="(SelectList)@ViewData["FinancialAccountID"]">
+                <select id="FinacialACID" asp-for="FinancialAccountID" class="form-control" asp-items="@ViewBag.viewModel.FinancialAccountCollection">
                     <option> Please Select </option>
                 </select>
             </div>
