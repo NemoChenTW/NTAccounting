@@ -168,7 +168,9 @@ namespace NTAccounting.Controllers
 
             TransactionsViewModel transactionViewModel = new TransactionsViewModel();
 
-            transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
+            // 取得主交易類別
+            var MainTransID = _context.SubTransactionCategory.Single(s => s.ID == transaction.SubTransactionCategoryID).MainCategoryID;
+            transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory(MainTransID);
 
             // 產生UserGroup 的 SelectList
             UserGroupsController controllerUserGroup = new UserGroupsController(_context);
