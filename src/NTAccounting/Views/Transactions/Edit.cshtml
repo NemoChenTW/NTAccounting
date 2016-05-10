@@ -6,6 +6,58 @@
 
 <h2>Edit</h2>
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    jQuery(function () {
+        var $subType = $("#SubTC")
+        $("#MainTC").change(function () {
+            var selectedItem = $(this).val();   // MainCategoryID
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "@Url.Action("GetSubTransactionCategory", "Transactions")",
+                data: { id: selectedItem },
+                success: function (data) {
+                    $subType.html('');
+                    $.each(data, function (i) {
+                        $subType.append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                    });
+                    statesProgress.hide();
+                },
+                error: function (xhr) {
+                    alert('Error!.');
+                }
+            })
+        });
+    });
+
+    jQuery(function () {
+        var $FinacialACsubType = $("#FinacialACID")
+        $("#UsrGrpID").change(function () {
+            var selectedItem = $(this).val();   // UsrGrpID
+            $.ajax({
+                type: "GET",
+                dataType: "json",
+                url: "@Url.Action("GetFinancialAccountJson", "Transactions")",
+                data: { userGroupID: selectedItem },
+            success: function (data) {
+                $FinacialACsubType.html('');
+                $.each(data, function (i) {
+                    $FinacialACsubType.append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                });
+                statesProgress.hide();
+            },
+            error: function (xhr) {
+                alert('Error!.');
+            }
+        })
+    });
+    });
+
+</script>
+
 <form asp-action="Edit">
     <div class="form-horizontal">
         <h4>Transaction</h4>
@@ -30,7 +82,7 @@
             <label asp-for="SubTransactionCategory.MainCategoryID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select id="MainTC" asp-for="SubTransactionCategory.MainCategoryID" class="form-control"
-                        asp-items="(SelectList)@ViewData["MainTransactionCategoryID"]" onchange="populate(this.id,'location')">
+                        asp-items="@ViewBag.viewModel.MainTransactionCategoryCollection" onchange="populate(this.id,'location')">
                     <option> Please Select </option>
                 </select>
             </div>
@@ -51,20 +103,20 @@
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-2 control-label">@ViewData["UserGroupDisplayName"]</label>
+            <label class="col-md-2 control-label">@ViewBag.viewModel.UserGroupDisplayName</label>
             <div class="col-md-10">
                 @{
                     var currentlySelectedIndex = 0; // Currently selected index (usually will come from model)
                 }
                 <select id="UsrGrpID" asp-for="@currentlySelectedIndex" class="form-control"
-                        asp-items="(SelectList)@ViewData["UserGroupID"]" onchange="populate(this.id,'location')"></select>
+                        asp-items="@ViewBag.viewModel.UserGroupCollection" onchange="populate(this.id,'location')"></select>
             </div>
         </div>
 
         <div class="form-group">
             <label asp-for="FinancialAccountID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select id="FinacialACID" asp-for="FinancialAccountID" class="form-control" asp-items="(SelectList)@ViewData["FinancialAccountID"]">
+                <select id="FinacialACID" asp-for="FinancialAccountID" class="form-control" asp-items="@ViewBag.viewModel.FinancialAccountCollection">">
                     <option> Please Select </option>
                 </select>
             </div>
