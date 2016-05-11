@@ -15,7 +15,7 @@ namespace NTAccounting.Controllers
             _context = context;    
         }
 
-        public IEnumerable GetAvailableUserGroup(string userID, bool defaultGrpID = false)
+        public IEnumerable GetAvailableUserGroup(string userID, int defaultGrpID = -1)
         {
             var userGroupQuery = from userGroupRelation in _context.UserGroupApplicationUser
                                  where userID == userGroupRelation.ApplicationUserID
@@ -24,15 +24,8 @@ namespace NTAccounting.Controllers
 
             var list = userGroupQuery.ToList();
 
-            IEnumerable result;
-            if (defaultGrpID)
-            {
-                result = list.OrderBy(grp => grp.Name != "SweetHome");
-            }
-            else
-            {
-                result = list;
-            }
+            IEnumerable result = list.OrderBy(grp => grp.ID != defaultGrpID);
+
             return result;
         }
 
