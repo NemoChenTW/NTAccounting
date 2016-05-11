@@ -15,11 +15,13 @@ namespace NTAccounting.Controllers
     {
         private ApplicationDbContext _context;
         private FinancialAccountsController controllerFinancialAccounts;
+        private UserGroupsController controllerUserGroups;
 
         public TransactionsController(ApplicationDbContext context)
         {
             _context = context;
             controllerFinancialAccounts = new FinancialAccountsController(_context);
+            controllerUserGroups = new UserGroupsController(_context);
         }
 
         // GET: Transactions
@@ -93,8 +95,7 @@ namespace NTAccounting.Controllers
             transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
 
             // 產生UserGroup 的 SelectList
-            UserGroupsController controllerUserGroup = new UserGroupsController(_context);
-            transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
+            transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
 
 
             // 取得UserGroup的DisplayName
@@ -158,8 +159,7 @@ namespace NTAccounting.Controllers
             transactionViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
 
             // 產生UserGroup 的 SelectList
-            UserGroupsController controllerUserGroup = new UserGroupsController(_context);
-            transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
+            transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
 
             // 取得UserGroup的DisplayName
             MemberInfo property = typeof(UserGroup).GetProperty("Name");
