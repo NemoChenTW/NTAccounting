@@ -167,7 +167,7 @@ namespace NTAccounting.Controllers
             var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
             transactionViewModel.UserGroupDisplayName = displayNameObj.Name;
 
-            // 取得預設UserGroup
+            // 取得預設交易帳戶
             var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
             transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(grpID);
 
