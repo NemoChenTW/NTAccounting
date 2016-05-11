@@ -174,7 +174,7 @@ namespace NTAccounting.Controllers
 
             // 取得預設交易帳戶
             var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
-            transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(grpID);
+            transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(transactionGroupID);
 
             ViewBag.viewModel = transactionViewModel;
 
