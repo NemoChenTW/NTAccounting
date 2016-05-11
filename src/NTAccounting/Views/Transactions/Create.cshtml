@@ -84,15 +84,13 @@
             <div class="col-md-10">
                 <select id="MainTC" asp-for="SubTransactionCategory.MainCategoryID" class="form-control"
                         asp-items="@ViewBag.viewModel.MainTransactionCategoryCollection" onchange="populate(this.id,'location')">
-                    <option> Please Select </option>
                 </select>
             </div>
         </div>
         <div class="form-group">
             <label asp-for="SubTransactionCategoryID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select id="SubTC" asp-for="SubTransactionCategoryID" class="form-control" asp-items="(SelectList)@ViewData["SubTransactionCategoryID"]">
-                    <option> Please Select </option>
+                <select id="SubTC" asp-for="SubTransactionCategoryID" class="form-control" asp-items="@ViewBag.viewModel.SubTransactionCategoryCollection">
                 </select>
             </div>
         </div>
@@ -118,7 +116,6 @@
             <label asp-for="FinancialAccountID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select id="FinacialACID" asp-for="FinancialAccountID" class="form-control" asp-items="@ViewBag.viewModel.FinancialAccountCollection">
-                    <option> Please Select </option>
                 </select>
             </div>
         </div>

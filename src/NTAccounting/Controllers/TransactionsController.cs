@@ -96,6 +96,11 @@ namespace NTAccounting.Controllers
             // 取得主交易類別
             transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
 
+            // 取得子交易類別
+            int MainTransID;
+            int.TryParse(transactionViewModel.MainTransactionCategoryCollection.First().Value, out MainTransID);
+            transactionViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
+
             // 預設群組
             var representGrpID = _context.Users.Single(u => u.Id == User.GetUserId()).RepresentativeGroupID;
 
