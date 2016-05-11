@@ -65,9 +65,8 @@ namespace NTAccounting.Controllers
 
             return MainSelectList;
         }
-
         [HttpGet]
-        public JsonResult GetSubTransactionCategoryJson(int id = -1)
+        public SelectList GetSubTransactionCategory(int id = -1)
         {
             var SubQuary = from tranCategory in _context.SubTransactionCategory
                             .AsEnumerable()
@@ -76,6 +75,14 @@ namespace NTAccounting.Controllers
                            select tranCategory;
 
             var SubSelectList = new SelectList(SubQuary, "ID", "Name");
+
+            return SubSelectList;
+        }
+
+        [HttpGet]
+        public JsonResult GetSubTransactionCategoryJson(int id = -1)
+        {
+            var SubSelectList = GetSubTransactionCategory(id);
 
             return Json(SubSelectList);
         }
