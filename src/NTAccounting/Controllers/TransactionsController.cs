@@ -25,17 +25,28 @@ namespace NTAccounting.Controllers
         }
 
         // GET: Transactions
-        public IActionResult Index()
+        public IActionResult Index(int? id)
         {
             var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory)
                                                            .Include(t => t.FinancialAccount);
 
-            var transactionIndexList = from transaction in applicationDbContext
+            IQueryable<Transaction> transactionIndexList;
+            if (id != null)
+            {
+                transactionIndexList = from transaction in applicationDbContext
+                                       where transaction.FinancialAccountID == id
                                        orderby transaction.Time descending
                                        select transaction;
-
+            }
+            else
+            {
+                transactionIndexList = from transaction in applicationDbContext
+                                       orderby transaction.Time descending
+                                       select transaction;
+            }
             return View(transactionIndexList.ToList());
         }
+
 
         // GET: Transactions/Details/5
         public IActionResult Details(int? id)

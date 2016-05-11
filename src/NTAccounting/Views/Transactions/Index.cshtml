@@ -35,7 +35,9 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+            <a asp-action="Index" asp-route-id="@item.FinancialAccountID">
+                @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+            </a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.Amount)
@@ -48,3 +50,7 @@
     </tr>
 }
 </table>
+
+<div>
+    <a asp-controller="Transactions" asp-action="Index" asp-route-id="@null">Back to List</a>
+</div>
