@@ -4,16 +4,19 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using NTAccounting.Models;
 using System.Collections.Generic;
+using System.Security.Claims;
 
 namespace NTAccounting.Controllers
 {
     public class FinancialAccountsController : Controller
     {
         private ApplicationDbContext _context;
+        private UserGroupsController controllerUserGroups;
 
         public FinancialAccountsController(ApplicationDbContext context)
         {
-            _context = context;    
+            _context = context;
+            controllerUserGroups = new UserGroupsController(_context);
         }
 
         [HttpGet]
@@ -68,7 +71,12 @@ namespace NTAccounting.Controllers
         public IActionResult Create()
         {
             ViewData["TypeID"] = new SelectList(_context.FinancialAccountType, "ID", "Type");
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
+            
+
+            var representGrpID = _context.Users.Single(u => u.Id == User.GetUserId()).RepresentativeGroupID;
+            var userGroups = controllerUserGroups.GetAvailableUserGroup(User.GetUserId(), representGrpID);
+            ViewData["UserGroupID"] = new SelectList(userGroups, "ID", "Name");
+
             return View();
         }
 
