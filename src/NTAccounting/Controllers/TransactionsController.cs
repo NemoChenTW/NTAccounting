@@ -103,8 +103,8 @@ namespace NTAccounting.Controllers
             transactionViewModel.UserGroupDisplayName = displayNameObj.Name;
 
             // 取得預設UserGroup
-            var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
-            transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(grpID);
+            var representGrpID = _context.Users.Single(u => u.Id == User.GetUserId()).RepresentativeGroupID;
+            transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(representGrpID);
 
             ViewBag.viewModel = transactionViewModel;
 
