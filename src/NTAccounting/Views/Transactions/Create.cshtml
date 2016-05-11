@@ -17,7 +17,7 @@
             $.ajax({
                 type: "GET",
                 dataType: "json",
-                url: "@Url.Action("GetSubTransactionCategory", "Transactions")",
+                url: "@Url.Action("GetSubTransactionCategoryJson", "Transactions")",
                 data: { id: selectedItem },
                 success: function (data) {
                     $subType.html('');

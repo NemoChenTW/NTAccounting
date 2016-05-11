@@ -67,7 +67,7 @@ namespace NTAccounting.Controllers
         }
 
         [HttpGet]
-        public JsonResult GetSubTransactionCategory(int id = -1)
+        public JsonResult GetSubTransactionCategoryJson(int id = -1)
         {
             var SubQuary = from tranCategory in _context.SubTransactionCategory
                             .AsEnumerable()
