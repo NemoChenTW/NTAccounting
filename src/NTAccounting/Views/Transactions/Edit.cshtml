@@ -90,7 +90,7 @@
         <div class="form-group">
             <label asp-for="SubTransactionCategoryID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
-                <select id="SubTC" asp-for="SubTransactionCategoryID" class="form-control" asp-items="(SelectList)@ViewData["SubTransactionCategoryID"]">
+                <select id="SubTC" asp-for="SubTransactionCategoryID" class="form-control" asp-items="@ViewBag.viewModel.SubTransactionCategoryCollection">
                     <option> Please Select </option>
                 </select>
             </div>

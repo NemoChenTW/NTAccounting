@@ -179,6 +179,8 @@ namespace NTAccounting.Controllers
             var MainTransID = _context.SubTransactionCategory.Single(s => s.ID == transaction.SubTransactionCategoryID).MainCategoryID;
             transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory(MainTransID);
 
+            transactionViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
+
             // ²£¥ÍUserGroup ªº SelectList
             UserGroupsController controllerUserGroup = new UserGroupsController(_context);
             transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
