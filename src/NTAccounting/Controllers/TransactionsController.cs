@@ -14,10 +14,12 @@ namespace NTAccounting.Controllers
     public class TransactionsController : Controller
     {
         private ApplicationDbContext _context;
+        private FinancialAccountsController controllerFinancialAccounts;
 
         public TransactionsController(ApplicationDbContext context)
         {
             _context = context;
+            controllerFinancialAccounts = new FinancialAccountsController(_context);
         }
 
         // GET: Transactions
@@ -83,28 +85,6 @@ namespace NTAccounting.Controllers
             return Json(SubSelectList);
         }
 
-        [HttpGet]
-        public SelectList GetFinancialAccountSelectList(int userGroupID = -1)
-        {
-            var accountQuary = from account in _context.FinancialAccount
-                               .AsEnumerable()
-                               where (account.UserGroupID == userGroupID)
-                               orderby account.ID
-                               select account;
-
-            var AccountSelectList = new SelectList(accountQuary, "ID", "Name");
-
-            return AccountSelectList;
-        }
-
-        [HttpGet]
-        public JsonResult GetFinancialAccountJson(int userGroupID = -1)
-        {
-            var AccountSelectList = GetFinancialAccountSelectList(userGroupID);
-
-            return Json(AccountSelectList);
-        }
-
         // GET: Transactions/Create
         public IActionResult Create()
         {
@@ -124,7 +104,7 @@ namespace NTAccounting.Controllers
 
             // 取得預設UserGroup
             var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
-            transactionViewModel.FinancialAccountCollection = GetFinancialAccountSelectList(grpID);
+            transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(grpID);
 
             ViewBag.viewModel = transactionViewModel;
 
@@ -188,7 +168,7 @@ namespace NTAccounting.Controllers
 
             // 取得預設UserGroup
             var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
-            transactionViewModel.FinancialAccountCollection = GetFinancialAccountSelectList(grpID);
+            transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(grpID);
 
             ViewBag.viewModel = transactionViewModel;
 

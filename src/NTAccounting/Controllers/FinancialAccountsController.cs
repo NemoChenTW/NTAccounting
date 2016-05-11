@@ -16,6 +16,28 @@ namespace NTAccounting.Controllers
             _context = context;    
         }
 
+        [HttpGet]
+        public SelectList GetFinancialAccountSelectList(int userGroupID = -1)
+        {
+            var accountQuary = from account in _context.FinancialAccount
+                               .AsEnumerable()
+                               where (account.UserGroupID == userGroupID)
+                               orderby account.ID
+                               select account;
+
+            var AccountSelectList = new SelectList(accountQuary, "ID", "Name");
+
+            return AccountSelectList;
+        }
+
+        [HttpGet]
+        public JsonResult GetFinancialAccountJson(int userGroupID = -1)
+        {
+            var AccountSelectList = GetFinancialAccountSelectList(userGroupID);
+
+            return Json(AccountSelectList);
+        }
+
         // GET: FinancialAccounts
         public IActionResult Index()
         {
