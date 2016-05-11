@@ -177,7 +177,7 @@ namespace NTAccounting.Controllers
 
             // 取得主交易類別
             var MainTransID = _context.SubTransactionCategory.Single(s => s.ID == transaction.SubTransactionCategoryID).MainCategoryID;
-            transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory(MainTransID);
+            transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
 
             transactionViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
 
