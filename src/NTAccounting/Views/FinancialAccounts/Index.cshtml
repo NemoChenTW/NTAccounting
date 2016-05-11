@@ -26,7 +26,9 @@
 @foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.Name)
+            <a asp-action="Details" asp-route-id="@item.ID">
+                @Html.DisplayFor(modelItem => item.Name)
+            </a>
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.FinancialAccountType.Type)
