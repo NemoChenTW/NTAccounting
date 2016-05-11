@@ -4,10 +4,10 @@ using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
 using NTAccounting.Models;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Claims;
+using NTAccounting.ViewModels.Transactions;
 
 namespace NTAccounting.Controllers
 {
@@ -61,9 +61,8 @@ namespace NTAccounting.Controllers
 
             return MainSelectList;
         }
-
         [HttpGet]
-        public JsonResult GetSubTransactionCategory(int id = -1)
+        public SelectList GetSubTransactionCategory(int id = -1)
         {
             var SubQuary = from tranCategory in _context.SubTransactionCategory
                             .AsEnumerable()
@@ -72,6 +71,14 @@ namespace NTAccounting.Controllers
                            select tranCategory;
 
             var SubSelectList = new SelectList(SubQuary, "ID", "Name");
+
+            return SubSelectList;
+        }
+
+        [HttpGet]
+        public JsonResult GetSubTransactionCategoryJson(int id = -1)
+        {
+            var SubSelectList = GetSubTransactionCategory(id);
 
             return Json(SubSelectList);
         }
@@ -101,21 +108,25 @@ namespace NTAccounting.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            ViewData["MainTransactionCategoryID"] = GetMainTransactionCategory();
-            //ViewData["SubTransactionCategoryID"] = GetSubTransactionCategory();
+            TransactionsViewModel transactionViewModel = new TransactionsViewModel();
+
+            transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
 
             // 產生UserGroup 的 SelectList
             UserGroupsController controllerUserGroup = new UserGroupsController(_context);
-            ViewData["UserGroupID"] = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
+            transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
+
 
             // 取得UserGroup的DisplayName
             MemberInfo property = typeof(UserGroup).GetProperty("Name");
             var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
-            ViewData["UserGroupDisplayName"] = displayNameObj.Name;
+            transactionViewModel.UserGroupDisplayName = displayNameObj.Name;
 
             // 取得預設UserGroup
             var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
-            ViewData["FinancialAccountID"] = GetFinancialAccountSelectList(grpID);
+            transactionViewModel.FinancialAccountCollection = GetFinancialAccountSelectList(grpID);
+
+            ViewBag.viewModel = transactionViewModel;
 
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
@@ -157,8 +168,30 @@ namespace NTAccounting.Controllers
             {
                 return HttpNotFound();
             }
-            ViewData["SubTransactionCategoryID"] = new SelectList(_context.SubTransactionCategory, "ID", "SubTransactionCategory", transaction.SubTransactionCategoryID);
-            ViewData["UserGroupID"] = new SelectList(_context.UserGroup, "ID", "Name");
+
+            TransactionsViewModel transactionViewModel = new TransactionsViewModel();
+
+            // 取得主交易類別
+            var MainTransID = _context.SubTransactionCategory.Single(s => s.ID == transaction.SubTransactionCategoryID).MainCategoryID;
+            transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
+
+            transactionViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
+
+            // 產生UserGroup 的 SelectList
+            UserGroupsController controllerUserGroup = new UserGroupsController(_context);
+            transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroup.GetAvailableUserGroup(User.GetUserId(), true), "ID", "Name");
+
+            // 取得UserGroup的DisplayName
+            MemberInfo property = typeof(UserGroup).GetProperty("Name");
+            var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+            transactionViewModel.UserGroupDisplayName = displayNameObj.Name;
+
+            // 取得預設UserGroup
+            var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
+            transactionViewModel.FinancialAccountCollection = GetFinancialAccountSelectList(grpID);
+
+            ViewBag.viewModel = transactionViewModel;
+
             return View(transaction);
         }
 
