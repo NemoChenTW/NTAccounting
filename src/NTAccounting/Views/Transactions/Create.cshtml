@@ -83,7 +83,7 @@
             <label asp-for="SubTransactionCategory.MainCategoryID" class="col-md-2 control-label"></label>
             <div class="col-md-10">
                 <select id="MainTC" asp-for="SubTransactionCategory.MainCategoryID" class="form-control"
-                        asp-items="@ViewBag.viewModel.MainTransactionCategoryCollection" onchange="populate(this.id,'location')">
+                        asp-items="@ViewBag.viewModel.MainTransactionCategoryCollection">
                 </select>
             </div>
         </div>
@@ -108,7 +108,7 @@
                     var currentlySelectedIndex = 0; // Currently selected index (usually will come from model)
                 }
                 <select id="UsrGrpID" asp-for="@currentlySelectedIndex" class="form-control"
-                        asp-items="(SelectList)@ViewBag.viewModel.UserGroupCollection" onchange="populate(this.id,'location')"></select>
+                        asp-items="(SelectList)@ViewBag.viewModel.UserGroupCollection"></select>
             </div>
         </div>
 
