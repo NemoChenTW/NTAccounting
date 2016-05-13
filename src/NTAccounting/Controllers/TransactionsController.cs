@@ -30,6 +30,8 @@ namespace NTAccounting.Controllers
             var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory)
                                                            .Include(t => t.FinancialAccount);
 
+            TransactionsIndexViewModel transactionIndexViewModel = new TransactionsIndexViewModel();
+
             IQueryable<Transaction> transactionIndexList;
             if (id != null)
             {
@@ -44,6 +46,15 @@ namespace NTAccounting.Controllers
                                        orderby transaction.Time descending
                                        select transaction;
             }
+
+            // 取得不重複的交易帳戶名稱
+            var acIDAuqry = (from tran in transactionIndexList
+                             select tran.FinancialAccount.Name)
+                            .Distinct();
+            transactionIndexViewModel.FinacialAccountNameList = acIDAuqry.ToList();
+
+            ViewBag.viewModel = transactionIndexViewModel;
+
             return View(transactionIndexList.ToList());
         }
 
