@@ -28,7 +28,8 @@ namespace NTAccounting.Controllers
         public IActionResult Index(int? id)
         {
             var applicationDbContext = _context.Transaction.Include(t => t.SubTransactionCategory)
-                                                           .Include(t => t.FinancialAccount);
+                                                           .Include(t => t.FinancialAccount)
+                                                           .Include(t => t.TargetFinancialAccount);
 
             TransactionsIndexViewModel transactionIndexViewModel = new TransactionsIndexViewModel();
 
