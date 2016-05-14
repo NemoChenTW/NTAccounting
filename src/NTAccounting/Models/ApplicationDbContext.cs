@@ -29,6 +29,18 @@ namespace NTAccounting.Models
                 .HasOne(m => m.ApplicationUser)
                 .WithMany(r => r.UserGroupApplicationUser)
                 .HasForeignKey(fk => fk.ApplicationUserID);
+
+            builder.Entity<Transaction>()
+                .HasOne(f => f.FinancialAccount)
+                .WithMany(t => t.Transactions)
+                .HasForeignKey(fk => fk.FinancialAccountID);
+
+            builder.Entity<Transaction>()
+                .HasOne(f => f.TargetFinancialAccount)
+                .WithMany(t => t.TransferTransactions)
+                .HasForeignKey(tfk => tfk.TargetFinancialAccountID)
+                .IsRequired(false);
+                
         }
         public DbSet<FinancialAccount> FinancialAccount { get; set; }
         public DbSet<FinancialAccountType> FinancialAccountType { get; set; }

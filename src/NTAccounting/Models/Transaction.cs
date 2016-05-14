@@ -35,5 +35,10 @@ namespace NTAccounting.Models
         public int FinancialAccountID { get; set; }
         [ForeignKey("FinancialAccountID")]
         public FinancialAccount FinancialAccount { get; set; }
+
+        //目標帳戶 (轉帳交易使用)
+        public int? TargetFinancialAccountID { get; set; }
+        [ForeignKey("TargetFinancialAccountID")]
+        public FinancialAccount TargetFinancialAccount { get; set; }
     }
 }
