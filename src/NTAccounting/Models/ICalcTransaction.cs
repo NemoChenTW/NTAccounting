@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Data.Entity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -7,10 +8,10 @@ namespace NTAccounting.Models
 {
     interface ICalcTransaction
     {
-        void CreateTransaction();
+        void CreateTransaction(ApplicationDbContext context);
 
-        void UpdateTransaction();
+        void UpdateTransaction(ApplicationDbContext context);
 
-        void DeleteTransaction();
+        void DeleteTransaction(ApplicationDbContext context);
     }
 }
