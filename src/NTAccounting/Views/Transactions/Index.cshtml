@@ -51,7 +51,16 @@
                             @Html.DisplayFor(modelItem => item.Name)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+                            @if (item.TargetFinancialAccountID == null)
+                            {
+                                @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+                                <text> => </text>
+                                @Html.DisplayFor(modelItem => item.TargetFinancialAccount.Name)
+                            }
                         </td>
                         <td>
                             @Html.DisplayFor(modelItem => item.Amount)
@@ -88,7 +97,8 @@
 
                     @foreach (var item in Model)
                     {
-                        @if(item.FinancialAccount.Name == @acName)
+                        @if(item.FinancialAccount.Name == @acName
+                            || ((item.TargetFinancialAccountID != null) && item.TargetFinancialAccount.Name == acName))
                         {
                             <tr>
                                 <td>
@@ -98,7 +108,16 @@
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
                                 <td>
-                                    @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+                                    @if (item.TargetFinancialAccountID == null)
+                                    {
+                                        @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+                                    }
+                                    else
+                                    {
+                                        @Html.DisplayFor(modelItem => item.FinancialAccount.Name)
+                                        <text> => </text>
+                                        @Html.DisplayFor(modelItem => item.TargetFinancialAccount.Name)
+                                    }
                                 </td>
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Amount)

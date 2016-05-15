@@ -40,5 +40,8 @@ namespace NTAccounting.Models
 
         // Transaction Foreignkey關係
         public virtual ICollection<Transaction> Transactions { get; set; }
+
+        // 轉帳交易目標帳戶的Foreignkey 關係
+        public virtual ICollection<Transaction> TransferTransactions { get; set; }
     }
 }
