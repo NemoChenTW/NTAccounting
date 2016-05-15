@@ -1,0 +1,36 @@
+@model NTAccounting.Models.MainTransactionCategory
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+
+        <br />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name" class="col-md-4 control-label"></label>
+            <div class="col-md-8">
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger" />
+            </div>
+        </div>
+        @Html.Hidden("TransactionType", Model.TransactionType)
+
+        @*<div class="form-group">
+            <label asp-for="TransactionType" class="col-md-4 control-label"></label>
+            <div class="col-md-8">
+                <select asp-for="TransactionType" class="form-control"></select>
+                <span asp-validation-for="TransactionType" class="text-danger" />
+            </div>
+        </div>*@
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}
