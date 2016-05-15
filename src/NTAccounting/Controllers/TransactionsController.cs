@@ -156,9 +156,8 @@ namespace NTAccounting.Controllers
                 // ·s¼W¥æ©ö
                 _context.Transaction.Add(transaction);
 
-                // ±b¤á¦©´Ú
-                var account = _context.FinancialAccount.SingleOrDefault(ac => ac.ID == transaction.FinancialAccountID);
-                account.Amount = account.Amount - transaction.Amount;
+                // ­×§ï±b¤á¾lÃB
+                transaction.CreateTransaction(_context);
 
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -216,6 +215,9 @@ namespace NTAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
+                // §ó·s±b¤á¾lÃB
+                transaction.UpdateTransaction(_context);
+
                 _context.Update(transaction);
                 _context.SaveChanges();
                 return RedirectToAction("Index");
@@ -252,8 +254,7 @@ namespace NTAccounting.Controllers
             _context.Transaction.Remove(transaction);
 
             // ¦^´_±b¤á¾lÃB
-            var account = _context.FinancialAccount.SingleOrDefault(ac => ac.ID == transaction.FinancialAccountID);
-            account.Amount = account.Amount + transaction.Amount;
+            transaction.DeleteTransaction(_context);
 
             _context.SaveChanges();
             return RedirectToAction("Index");
