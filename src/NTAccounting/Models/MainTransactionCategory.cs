@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NTAccounting.Models
 {
-    public class MainTransactionCategory
+    public class MainTransactionCategory : TransactionCategory
     {
         [Key]
         public int ID { get; set; }

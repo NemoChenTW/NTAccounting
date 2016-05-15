@@ -152,20 +152,29 @@ namespace NTAccounting.Models
 
 
             // 交易主類別
-            MainTransactionCategory MainCategoryFood, MainCategorySystem, MainCategoryArt;
+            MainTransactionCategory MainCategoryFood, MainCategorySystem, MainCategoryArt, MainCategorySalary;
             context.MainTransactionCategory.AddRange(
                     MainCategoryFood = new MainTransactionCategory
                     {
-                        Name = "食物"
+                        Name = "食物",
+                        TransactionType = TransactionCategory.TransactionCategoryType.Expense
                     },
                     MainCategorySystem = new MainTransactionCategory
                     {
-                        Name = "民生設施"
+                        Name = "民生設施",
+                        TransactionType = TransactionCategory.TransactionCategoryType.Expense
                     },
                     MainCategoryArt = new MainTransactionCategory
                     {
-                        Name = "文藝"
+                        Name = "文藝",
+                        TransactionType = TransactionCategory.TransactionCategoryType.Expense
+                    },
+                    MainCategorySalary = new MainTransactionCategory
+                    {
+                        Name = "薪資",
+                        TransactionType = TransactionCategory.TransactionCategoryType.Income
                     }
+
                 );
 
 
@@ -200,6 +209,11 @@ namespace NTAccounting.Models
                     {
                         Name = "音樂會",
                         MainCategoryID = MainCategoryArt.ID
+                    },
+                    new SubTransactionCategory
+                    {
+                        Name = "神通",
+                        MainCategoryID = MainCategorySalary.ID
                     }
                 );
             context.SaveChanges();
