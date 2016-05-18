@@ -52,6 +52,12 @@ namespace NTAccounting.Controllers
             // 取得預設UserGroup
             transactionCreateViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(representGrpID);
 
+
+            // 預設交易時間
+            var transaction = new Transaction();
+            transaction.Time = DateTime.Today;
+            transactionCreateViewModel.Transaction = transaction;
+
             return transactionCreateViewModel;
         }
 
@@ -145,11 +151,9 @@ namespace NTAccounting.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            ViewBag.viewModel = GetTransactionsCreateViewModel();
+            TransactionsCreateViewModel transactionCreateView = GetTransactionsCreateViewModel();
 
-            Transaction transaction = new Transaction();
-            transaction.Time = DateTime.Today;
-            return View(transaction);
+            return View(transactionCreateView);
         }
 
         // POST: Transactions/Create
