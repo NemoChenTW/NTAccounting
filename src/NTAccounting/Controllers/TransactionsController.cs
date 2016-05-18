@@ -24,6 +24,37 @@ namespace NTAccounting.Controllers
             controllerUserGroups = new UserGroupsController(_context);
         }
 
+
+        private TransactionsCreateViewModel GetTransactionsCreateViewModel()
+        {
+            TransactionsCreateViewModel transactionCreateViewModel = new TransactionsCreateViewModel();
+
+            // 取得主交易類別
+            transactionCreateViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
+
+            // 取得子交易類別
+            int MainTransID;
+            int.TryParse(transactionCreateViewModel.MainTransactionCategoryCollection.First().Value, out MainTransID);
+            transactionCreateViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
+
+            // 預設群組
+            var representGrpID = _context.Users.Single(u => u.Id == User.GetUserId()).RepresentativeGroupID;
+
+            // 產生UserGroup 的 SelectList
+            transactionCreateViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(User.GetUserId(), representGrpID), "ID", "Name");
+
+
+            // 取得UserGroup的DisplayName
+            MemberInfo property = typeof(UserGroup).GetProperty("Name");
+            var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
+            transactionCreateViewModel.UserGroupDisplayName = displayNameObj.Name;
+
+            // 取得預設UserGroup
+            transactionCreateViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(representGrpID);
+
+            return transactionCreateViewModel;
+        }
+
         // GET: Transactions
         public IActionResult Index(int? id)
         {
@@ -114,32 +145,7 @@ namespace NTAccounting.Controllers
         // GET: Transactions/Create
         public IActionResult Create()
         {
-            TransactionsCreateViewModel transactionCreateViewModel = new TransactionsCreateViewModel();
-
-            // 取得主交易類別
-            transactionCreateViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
-
-            // 取得子交易類別
-            int MainTransID;
-            int.TryParse(transactionCreateViewModel.MainTransactionCategoryCollection.First().Value, out MainTransID);
-            transactionCreateViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
-
-            // 預設群組
-            var representGrpID = _context.Users.Single(u => u.Id == User.GetUserId()).RepresentativeGroupID;
-
-            // 產生UserGroup 的 SelectList
-            transactionCreateViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(User.GetUserId(), representGrpID), "ID", "Name");
-
-
-            // 取得UserGroup的DisplayName
-            MemberInfo property = typeof(UserGroup).GetProperty("Name");
-            var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
-            transactionCreateViewModel.UserGroupDisplayName = displayNameObj.Name;
-
-            // 取得預設UserGroup
-            transactionCreateViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(representGrpID);
-            
-            ViewBag.viewModel = transactionCreateViewModel;
+            ViewBag.viewModel = GetTransactionsCreateViewModel();
 
             Transaction transaction = new Transaction();
             transaction.Time = DateTime.Today;
