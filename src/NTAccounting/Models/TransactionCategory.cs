@@ -44,7 +44,7 @@ namespace NTAccounting.Models
         {
             get
             {
-                string title = "建立";
+                string title = "新增";
                 title += this.TransactionTypeName;
                 return title;
             }
