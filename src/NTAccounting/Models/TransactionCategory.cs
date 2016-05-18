@@ -38,5 +38,16 @@ namespace NTAccounting.Models
                 }
             }
         }
+
+        [NotMapped]
+        public string CreateTitle
+        {
+            get
+            {
+                string title = "建立";
+                title += this.TransactionTypeName;
+                return title;
+            }
+        }
     }
 }

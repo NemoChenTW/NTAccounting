@@ -6,66 +6,35 @@
 
 <h2>Index</h2>
 
-<!-- Expense modal -->
+<!-- TransactionType modal -->
 @{ 
-    var ExpenseTitle = "Create Expense";
-    var IncomeTitle = "Create Income";
-    var TransferTitle = "Create Transfer";
+    var TransTypes = Enum.GetValues(typeof(TransactionCategory.TransactionCategoryType)).Cast<TransactionCategory.TransactionCategoryType>();
     var createModel = new NTAccounting.Models.MainTransactionCategory();
 }
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".Expense-modal">@ExpenseTitle</button>
-<div class="modal fade Expense-modal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content  col-md-8 col-md-offset-2">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">@ExpenseTitle</h4>
-            </div>
-            <div>
-                @{
-                    createModel.TransactionType = TransactionCategory.TransactionCategoryType.Expense;
-                }
-                @Html.Partial("_Create", createModel)
-            </div>
-        </div>
-    </div>
-</div>
-<!-- Income modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".Income-modal">@IncomeTitle</button>
-<div class="modal fade Income-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content col-md-8 col-md-offset-2">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">@IncomeTitle</h4>
-            </div>
-            <div>
-                @{
-                    createModel.TransactionType = TransactionCategory.TransactionCategoryType.Income;
-                }
-                @Html.Partial("_Create", createModel)
+
+@foreach (TransactionCategory.TransactionCategoryType type in TransTypes)
+{
+    createModel.TransactionType = type;
+    var ModalTitle = @createModel.CreateTitle + @Html.DisplayNameFor(model => model.Name);
+    var modalName = createModel.TransactionTypeName + "-modal";
+
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".@modalName">@ModalTitle</button>
+    <div class="modal fade @modalName" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content  col-md-8 col-md-offset-2">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        <b>@ModalTitle</b>
+                    </h4>
+                </div>
+                <div>
+                    @Html.Partial("_Create", createModel)
+                </div>
             </div>
         </div>
     </div>
-</div>
-<!-- Transfer modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".Transfer-modal">@TransferTitle</button>
-<div class="modal fade Transfer-modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content col-md-8 col-md-offset-2">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                <h4 class="modal-title" id="myModalLabel">@TransferTitle</h4>
-            </div>
-            <div>
-                @{
-                    createModel.TransactionType = TransactionCategory.TransactionCategoryType.Transfer;
-                }
-                @Html.Partial("_Create", createModel)
-            </div>
-        </div>
-    </div>
-</div>
+}
 
 <br /><br />
 

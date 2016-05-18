@@ -11,7 +11,7 @@ namespace NTAccounting.Models
         [Key]
         public int ID { get; set; }
 
-        [Display(Name = "交易主類別名稱")]
+        [Display(Name = "交易主類別")]
         public string Name { get; set; }
 
         public virtual ICollection<SubTransactionCategory> SubTransactionCategories { get; set; }
