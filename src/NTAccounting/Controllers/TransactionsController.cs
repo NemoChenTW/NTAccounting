@@ -93,6 +93,8 @@ namespace NTAccounting.Controllers
 
             ViewBag.viewModel = transactionIndexViewModel;
 
+            ViewBag.viewModelCreate = GetTransactionsCreateViewModel();
+
             return View(transactionIndexList.ToList());
         }
 
