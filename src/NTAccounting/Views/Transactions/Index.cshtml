@@ -31,7 +31,8 @@
                     </h4>
                 </div>
                 <div>
-                    @Html.Partial("_Create", (NTAccounting.ViewModels.Transactions.TransactionsCreateViewModel)@ViewBag.viewModelCreate)
+                    @await Component.InvokeAsync("TransactionCreate");
+                    @*@Html.Partial("_Create", (NTAccounting.ViewModels.Transactions.TransactionsCreateViewModel)@ViewBag.viewModelCreate)*@
                 </div>
             </div>
         </div>

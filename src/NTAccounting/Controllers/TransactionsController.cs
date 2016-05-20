@@ -25,8 +25,20 @@ namespace NTAccounting.Controllers
         }
 
 
-        private TransactionsCreateViewModel GetTransactionsCreateViewModel()
+        public TransactionsCreateViewModel GetTransactionsCreateViewModel(string userName = null)
         {
+            string USERID = null;
+
+            if (userName == null)
+            {
+                USERID = User.GetUserId();
+            }
+            else
+            {
+                USERID = _context.Users.SingleOrDefault(u => u.NormalizedUserName == userName.ToUpper()).Id;
+            }
+            
+
             TransactionsCreateViewModel transactionCreateViewModel = new TransactionsCreateViewModel();
 
             // 取得主交易類別
@@ -38,10 +50,10 @@ namespace NTAccounting.Controllers
             transactionCreateViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
 
             // 預設群組
-            var representGrpID = _context.Users.Single(u => u.Id == User.GetUserId()).RepresentativeGroupID;
-
+            var representGrpID = _context.Users.Single(u => u.Id == USERID).RepresentativeGroupID;
+            
             // 產生UserGroup 的 SelectList
-            transactionCreateViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(User.GetUserId(), representGrpID), "ID", "Name");
+            transactionCreateViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(USERID, representGrpID), "ID", "Name");
 
 
             // 取得UserGroup的DisplayName
