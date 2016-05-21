@@ -1,11 +1,5 @@
 @model NTAccounting.ViewModels.Transactions.TransactionsCreateViewModel
 
-@{
-    ViewData["Title"] = "Create";
-}
-
-<h2>Create</h2>
-
 <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
 
 <script type="text/javascript">
@@ -60,50 +54,46 @@
 
 <form asp-action="Create">
     <div class="form-horizontal">
-        <h4>Transaction</h4>
-        <hr />
+        <br />
         <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
         <div class="form-group">
-            <label asp-for="Transaction.Amount" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
+            <label asp-for="Transaction.Amount" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
                 <input asp-for="Transaction.Amount" class="form-control" />
                 <span asp-validation-for="Transaction.Amount" class="text-danger" />
             </div>
         </div>
 
-
         <div class="form-group">
-            <label asp-for="Transaction.Name" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
+            <label asp-for="Transaction.Name" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
                 <input asp-for="Transaction.Name" class="form-control" />
                 <span asp-validation-for="Transaction.Name" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Transaction.SubTransactionCategory.MainCategoryID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
+            <label asp-for="Transaction.SubTransactionCategory.MainCategoryID" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
                 <select id="MainTC" asp-for="Transaction.SubTransactionCategory.MainCategoryID" class="form-control"
-                        asp-items="@Model.MainTransactionCategoryCollection">
-                </select>
+                        asp-items="@Model.MainTransactionCategoryCollection"></select>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Transaction.SubTransactionCategoryID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select id="SubTC" asp-for="Transaction.SubTransactionCategoryID" class="form-control" asp-items="@Model.SubTransactionCategoryCollection">
-                </select>
+            <label asp-for="Transaction.SubTransactionCategoryID" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <select id="SubTC" asp-for="Transaction.SubTransactionCategoryID" class="form-control" asp-items="@Model.SubTransactionCategoryCollection"></select>
             </div>
         </div>
         <div class="form-group">
-            <label asp-for="Transaction.Time" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
+            <label asp-for="Transaction.Time" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
                 <input asp-for="Transaction.Time" class="form-control" />
                 <span asp-validation-for="Transaction.Time" class="text-danger" />
             </div>
         </div>
         <div class="form-group">
-            <label class="col-md-2 control-label">@Model.UserGroupDisplayName</label>
-            <div class="col-md-10">
+            <label class="col-md-3 control-label">@Model.UserGroupDisplayName</label>
+            <div class="col-md-9">
                 @{
                     var currentlySelectedIndex = 0; // Currently selected index (usually will come from model)
                 }
@@ -113,24 +103,19 @@
         </div>
 
         <div class="form-group">
-            <label asp-for="Transaction.FinancialAccountID" class="col-md-2 control-label"></label>
-            <div class="col-md-10">
-                <select id="FinacialACID" asp-for="Transaction.FinancialAccountID" class="form-control" asp-items="@Model.FinancialAccountCollection">
-                </select>
+            <label asp-for="Transaction.FinancialAccountID" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <select id="FinacialACID" asp-for="Transaction.FinancialAccountID" class="form-control" asp-items="@Model.FinancialAccountCollection"></select>
             </div>
         </div>
 
         <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
+            <div class="col-md-offset-4 col-md-8">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </div>
     </div>
 </form>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
 @section Scripts {
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

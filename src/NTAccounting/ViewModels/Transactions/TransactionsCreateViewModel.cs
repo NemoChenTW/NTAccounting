@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NTAccounting.ViewModels.Transactions
 {
-    public class TransactionsViewModel
+    public class TransactionsCreateViewModel
     {
         public IEnumerable<SelectListItem> MainTransactionCategoryCollection { get; set; }
 
@@ -18,5 +18,7 @@ namespace NTAccounting.ViewModels.Transactions
         public IEnumerable<SelectListItem> FinancialAccountCollection { get; set; }
 
         public string UserGroupDisplayName { get; set; }
+
+        public Transaction Transaction { get; set; }
     }
 }

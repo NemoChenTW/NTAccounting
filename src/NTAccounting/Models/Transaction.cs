@@ -13,7 +13,7 @@ namespace NTAccounting.Models
         [Key]
         public int ID { get; set; }
 
-        [Display(Name = "交易名稱")]
+        [Display(Name = "交易")]
         public string Name { get; set; }
 
         [Display(Name = "交易金額")]
