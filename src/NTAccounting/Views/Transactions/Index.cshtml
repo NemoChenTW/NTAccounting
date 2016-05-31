@@ -8,6 +8,52 @@
     <a asp-controller="Transactions" asp-action="Index" asp-route-id="@null">Index</a>
 </h2>
 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+
+    function updateSubTC(MainTC, SubTC) {
+        var $subType = $('#' + SubTC)
+        var selectedItem = $('#' + MainTC).val();   // MainCategoryID
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "@Url.Action("GetSubTransactionCategoryJson", "Transactions")",
+            data: { id: selectedItem },
+            success: function (data) {
+                $subType.html('');
+                $.each(data, function (i) {
+                    $subType.append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                });
+            },
+            error: function (xhr) {
+                alert('Error!.');
+            }
+        })
+    };
+
+    function updateFinacialACID(UsrGrpID, FinacialACID) {
+        var $FinacialACsubType = $('#' + FinacialACID)
+        var selectedItem = $('#' + UsrGrpID).val();   // UsrGrpID
+        $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: "@Url.Action("GetFinancialAccountJson", "FinancialAccounts")",
+            data: { userGroupID: selectedItem },
+            success: function (data) {
+                $FinacialACsubType.html('');
+                $.each(data, function (i) {
+                    $FinacialACsubType.append('<option value="' + data[i].Value + '">' + data[i].Text + '</option>');
+                });
+            },
+            error: function (xhr) {
+                alert('Error!.');
+            }
+        })
+    };
+
+</script>
+
 <!-- TransactionType modal -->
 @{
     var TransTypes = Enum.GetValues(typeof(TransactionCategory.TransactionCategoryType)).Cast<TransactionCategory.TransactionCategoryType>();
