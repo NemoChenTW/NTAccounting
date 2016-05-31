@@ -20,5 +20,7 @@ namespace NTAccounting.ViewModels.Transactions
         public string UserGroupDisplayName { get; set; }
 
         public Transaction Transaction { get; set; }
+
+        public TransactionCategory.TransactionCategoryType TransactionCategoryType { get; set; }
     }
 }

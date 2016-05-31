@@ -25,6 +25,8 @@ namespace NTAccounting.ViewComponents
         public async Task<IViewComponentResult> InvokeAsync(TransactionCategory.TransactionCategoryType type)
         {
             var viewModel = controllerTransactions.GetTransactionsCreateViewModel(User.Identity.Name);
+
+            viewModel.TransactionCategoryType = type;
             
             // 根據交易類型取得主交易類別
             var MainQuary = from mainTran in db.MainTransactionCategory
