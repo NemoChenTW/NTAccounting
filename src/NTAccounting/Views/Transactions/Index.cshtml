@@ -18,7 +18,7 @@
 {
     createModel.TransactionType = type;
     var ModalTitle = @createModel.CreateTitle + @Html.DisplayNameFor(model => model.Name);
-    var modalName = createModel.TransactionTypeName + "-modal";
+    var modalName = createModel.TransactionType.ToString() + "-modal";
 
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target=".@modalName">@ModalTitle</button>
     <div class="modal fade @modalName" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
