@@ -32,8 +32,8 @@
         })
     };
 
-    function updateFinacialACID(UsrGrpID, FinacialACID) {
-        var $FinacialACsubType = $('#' + FinacialACID)
+    function updateFinacialACID(UsrGrpID, FinacialACID, TargetFinacialACID) {
+        var $FinacialACsubType = $('#' + FinacialACID + ', #' + TargetFinacialACID)
         var selectedItem = $('#' + UsrGrpID).val();   // UsrGrpID
         $.ajax({
             type: "GET",

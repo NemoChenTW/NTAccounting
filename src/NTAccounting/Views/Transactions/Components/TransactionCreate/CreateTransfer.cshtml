@@ -1,0 +1,85 @@
+@model NTAccounting.ViewModels.Transactions.TransactionsCreateViewModel
+
+
+
+<form asp-action="Create">
+    <div class="form-horizontal">
+        <br />
+        <div asp-validation-summary="ValidationSummary.ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Transaction.Amount" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <input asp-for="Transaction.Amount" class="form-control" />
+                <span asp-validation-for="Transaction.Amount" class="text-danger" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Transaction.Name" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <input asp-for="Transaction.Name" class="form-control" />
+                <span asp-validation-for="Transaction.Name" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Transaction.SubTransactionCategory.MainCategoryID" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <select id="MainTC_@Model.TransactionCategoryType" asp-for="Transaction.SubTransactionCategory.MainCategoryID" class="form-control"
+                        asp-items="@Model.MainTransactionCategoryCollection" onchange='updateSubTC(id, "SubTC_@Model.TransactionCategoryType")'></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Transaction.SubTransactionCategoryID" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <select id="SubTC_@Model.TransactionCategoryType" asp-for="Transaction.SubTransactionCategoryID" class="form-control"
+                        asp-items="@Model.SubTransactionCategoryCollection"></select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Transaction.Time" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <input asp-for="Transaction.Time" class="form-control" />
+                <span asp-validation-for="Transaction.Time" class="text-danger" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-3 control-label">@Model.UserGroupDisplayName</label>
+            <div class="col-md-9">
+                @{
+                    var currentlySelectedIndex = 0; // Currently selected index (usually will come from model)
+                }
+                <select id="UsrGrpID_@Model.TransactionCategoryType" asp-for="@currentlySelectedIndex" class="form-control"
+                        asp-items="(SelectList)@Model.UserGroupCollection" 
+                        onchange='updateFinacialACID(id, "FinacialACID_@Model.TransactionCategoryType", "TargetFinacialACID_@Model.TransactionCategoryType")'></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Transaction.FinancialAccountID" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <select id="FinacialACID_@Model.TransactionCategoryType" asp-for="Transaction.FinancialAccountID" class="form-control"
+                        asp-items="@Model.FinancialAccountCollection"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Transaction.TargetFinancialAccountID" class="col-md-3 control-label"></label>
+            <div class="col-md-9">
+                <select id="TargetFinacialACID_@Model.TransactionCategoryType" asp-for="Transaction.TargetFinancialAccountID" class="form-control"
+                        asp-items="@Model.FinancialAccountCollection"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-4 col-md-8">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts {
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

@@ -47,6 +47,12 @@ namespace NTAccounting.ViewComponents
             
             viewModel.SubTransactionCategoryCollection = controllerTransactions.GetSubTransactionCategory(MainTransID);
 
+            // 轉帳交易使用 CreateTransfer ViewComponent
+            if (type == TransactionCategory.TransactionCategoryType.Transfer)
+            {
+                return View("CreateTransfer", viewModel);
+            }
+            // 收入支出使用Default TransactionCreate ViewComponent
             return View(viewModel);
         }
 
