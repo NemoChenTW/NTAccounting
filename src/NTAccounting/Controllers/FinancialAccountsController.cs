@@ -1,4 +1,4 @@
-using System.Linq;
+ï»¿using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
@@ -44,7 +44,7 @@ namespace NTAccounting.Controllers
         // GET: FinancialAccounts
         public IActionResult Index()
         {
-            // ¥[¤JForeign key FinancialAccountTypeªºvalue
+            // åŠ å…¥Foreign key FinancialAccountTypeçš„value
             var financialAccounts = _context.FinancialAccount.Include(f => f.FinancialAccountType);
 
             return View(financialAccounts.ToList());
@@ -87,7 +87,7 @@ namespace NTAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ³]©w¾lÃB¬°ªì©lª÷ÃB
+                // è¨­å®šé¤˜é¡ç‚ºåˆå§‹é‡‘é¡
                 financialAccount.Amount = financialAccount.InitialAmount;
 
                 _context.FinancialAccount.Add(financialAccount);

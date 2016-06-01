@@ -1,4 +1,4 @@
-using System.Linq;
+ï»¿using System.Linq;
 using Microsoft.AspNet.Mvc;
 using Microsoft.AspNet.Mvc.Rendering;
 using Microsoft.Data.Entity;
@@ -41,31 +41,31 @@ namespace NTAccounting.Controllers
 
             TransactionsCreateViewModel transactionCreateViewModel = new TransactionsCreateViewModel();
 
-            // ¨ú±o¥D¥æ©öÃş§O
+            // å–å¾—ä¸»äº¤æ˜“é¡åˆ¥
             transactionCreateViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
 
-            // ¨ú±o¤l¥æ©öÃş§O
+            // å–å¾—å­äº¤æ˜“é¡åˆ¥
             int MainTransID;
             int.TryParse(transactionCreateViewModel.MainTransactionCategoryCollection.First().Value, out MainTransID);
             transactionCreateViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
 
-            // ¹w³]¸s²Õ
+            // é è¨­ç¾¤çµ„
             var representGrpID = _context.Users.Single(u => u.Id == USERID).RepresentativeGroupID;
             
-            // ²£¥ÍUserGroup ªº SelectList
+            // ç”¢ç”ŸUserGroup çš„ SelectList
             transactionCreateViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(USERID, representGrpID), "ID", "Name");
 
 
-            // ¨ú±oUserGroupªºDisplayName
+            // å–å¾—UserGroupçš„DisplayName
             MemberInfo property = typeof(UserGroup).GetProperty("Name");
             var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
             transactionCreateViewModel.UserGroupDisplayName = displayNameObj.Name;
 
-            // ¨ú±o¹w³]UserGroup
+            // å–å¾—é è¨­UserGroup
             transactionCreateViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(representGrpID);
 
 
-            // ¹w³]¥æ©ö®É¶¡
+            // é è¨­äº¤æ˜“æ™‚é–“
             var transaction = new Transaction();
             transaction.Time = DateTime.Today;
             transactionCreateViewModel.Transaction = transaction;
@@ -97,7 +97,7 @@ namespace NTAccounting.Controllers
                                        select transaction;
             }
 
-            // ¨ú±o¤£­«½Æªº¥æ©ö±b¤á¦WºÙ
+            // å–å¾—ä¸é‡è¤‡çš„äº¤æ˜“å¸³æˆ¶åç¨±
             var acIDAuqry = (from tran in transactionIndexList
                              select tran.FinancialAccount.Name)
                             .Distinct();
@@ -177,10 +177,10 @@ namespace NTAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
-                // ·s¼W¥æ©ö
+                // æ–°å¢äº¤æ˜“
                 _context.Transaction.Add(transaction);
 
-                // ­×§ï±b¤á¾lÃB
+                // ä¿®æ”¹å¸³æˆ¶é¤˜é¡
                 transaction.CreateTransaction(_context);
 
                 _context.SaveChanges();
@@ -207,23 +207,23 @@ namespace NTAccounting.Controllers
 
             TransactionsCreateViewModel transactionViewModel = new TransactionsCreateViewModel();
 
-            // ¨ú±o¥D¥æ©öÃş§O
+            // å–å¾—ä¸»äº¤æ˜“é¡åˆ¥
             var MainTransID = _context.SubTransactionCategory.Single(s => s.ID == transaction.SubTransactionCategoryID).MainCategoryID;
             transactionViewModel.MainTransactionCategoryCollection = GetMainTransactionCategory();
 
-            // ¨ú±o¤l¥æ©öÃş§O
+            // å–å¾—å­äº¤æ˜“é¡åˆ¥
             transactionViewModel.SubTransactionCategoryCollection = GetSubTransactionCategory(MainTransID);
 
-            // ²£¥ÍUserGroup ªº SelectList
+            // ç”¢ç”ŸUserGroup çš„ SelectList
             var transactionGroupID = _context.FinancialAccount.Single(f => f.ID == transaction.FinancialAccountID).UserGroupID;
             transactionViewModel.UserGroupCollection = new SelectList(controllerUserGroups.GetAvailableUserGroup(User.GetUserId(), transactionGroupID), "ID", "Name");
 
-            // ¨ú±oUserGroupªºDisplayName
+            // å–å¾—UserGroupçš„DisplayName
             MemberInfo property = typeof(UserGroup).GetProperty("Name");
             var displayNameObj = property.GetCustomAttribute(typeof(DisplayAttribute)) as DisplayAttribute;
             transactionViewModel.UserGroupDisplayName = displayNameObj.Name;
 
-            // ¨ú±o¹w³]¥æ©ö±b¤á
+            // å–å¾—é è¨­äº¤æ˜“å¸³æˆ¶
             var grpID = _context.UserGroupApplicationUser.FirstOrDefault(grp => grp.ApplicationUserID == User.GetUserId()).UserGroupID;
             transactionViewModel.FinancialAccountCollection = controllerFinancialAccounts.GetFinancialAccountSelectList(transactionGroupID);
 
@@ -239,7 +239,7 @@ namespace NTAccounting.Controllers
         {
             if (ModelState.IsValid)
             {
-                // §ó·s±b¤á¾lÃB
+                // æ›´æ–°å¸³æˆ¶é¤˜é¡
                 transaction.UpdateTransaction(_context);
 
                 _context.Update(transaction);
@@ -277,7 +277,7 @@ namespace NTAccounting.Controllers
             Transaction transaction = _context.Transaction.Single(m => m.ID == id);
             _context.Transaction.Remove(transaction);
 
-            // ¦^´_±b¤á¾lÃB
+            // å›å¾©å¸³æˆ¶é¤˜é¡
             transaction.DeleteTransaction(_context);
 
             _context.SaveChanges();

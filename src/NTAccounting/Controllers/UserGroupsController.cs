@@ -1,4 +1,4 @@
-using System.Linq;
+ï»¿using System.Linq;
 using System.Security.Claims;
 using Microsoft.AspNet.Mvc;
 using NTAccounting.Models;
@@ -70,7 +70,7 @@ namespace NTAccounting.Controllers
 
                 var userId = User.GetUserId();
 
-                // «Ø¥ßUser & UserGroup¹ïÀ³Ãö«Y
+                // å»ºç«‹User & UserGroupå°æ‡‰é—œä¿‚
                 var userGroupAndApplicationUser = new UserGroupApplicationUser();
                 userGroupAndApplicationUser.ApplicationUserID = userId;
                 userGroupAndApplicationUser.UserGroupID = userGroup.ID;
